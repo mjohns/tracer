@@ -9,7 +9,8 @@
 
 using namespace scad;
 
-constexpr bool kWriteTestKeys = false;
+constexpr bool kWriteTestKeys = true;
+constexpr bool kIncludeDactylRef = true;
 // Add the caps into the stl for testing.
 constexpr bool kAddCaps = false;
 
@@ -35,6 +36,7 @@ int main() {
   if (kWriteTestKeys) {
     std::vector<Shape> test_shapes;
     std::vector<Key*> test_keys = {&d.key_3, &d.key_e, &d.key_4, &d.key_5, &d.key_d};
+    test_keys = d.all_keys();
     for (Key* key : test_keys) {
       key->add_side_nub = false;
       key->extra_z = 4;
@@ -42,6 +44,12 @@ int main() {
       if (kAddCaps) {
         test_shapes.push_back(key->GetCap().Color("red"));
       }
+    }
+    if (kIncludeDactylRef) {
+      Shape dactyl_manuform = Import("dactyl_manuform.stl").Translate(9, 8, -3.5);
+      Shape dactyl_cc = Import("dactyl_cc.stl");
+      test_shapes.push_back(dactyl_manuform.Color("green", .6));
+      //  test_shapes.push_back(dactyl_cc.Color("blue", .3));
     }
     UnionAll(test_shapes).WriteToFile("test_keys.scad");
     return 0;
