@@ -68,15 +68,104 @@ KeyData::KeyData(TransformList key_origin) {
   // Thumb keys
   //
 
-  key_backspace.Configure([&](Key& k) {
-    k.name = "key_backspace";
+  key_th1.Configure([&](Key& k) {
+    k.name = "key_th1";
     k.SetParent(key_origin);
     k.SetPosition(60, -9.18, 42.83);
-    k.t().rz = -21;
-    k.t().rx = 12;
-    k.t().ry = -4.5;
+    k.t().x += -8;
+    k.t().y += 4;
+    k.t().rz = -7;
+    k.t().rx = 15;
+    k.t().ry = 30;
   });
 
+  key_th2.Configure([&](Key& k) {
+    k.name = "key_th2";
+    k.SetParent(key_th1);
+    k.SetPosition(19, -3, 5);
+    k.t().x += -1;
+    // k.t().y += 4;
+    // k.t().rz = -7;
+    // k.t().rx = 15;
+    k.t().ry = -18;
+
+    k.AddTransform();
+    k.t().y += -2;
+  });
+
+  key_th3.Configure([&](Key& k) {
+    k.name = "key_th3";
+    k.SetParent(key_th2);
+    k.SetPosition(19, -3, 5);
+    k.t().x += -1;
+    k.t().y += -6;
+    // k.t().y += 4;
+    // k.t().rz = -7;
+    // k.t().rx = 15;
+    k.t().ry = -18;
+  });
+
+  key_th_top2.Configure([&](Key& k) {
+    k.name = "key_th_top2";
+    k.type = KeyType::SA;
+    k.SetParent(key_th2);
+    k.SetPosition(0, 19, 3);
+    // k.t().x += -1;
+    // k.t().y += 4;
+    // k.t().rz = -7;
+    // k.t().rx = 15;
+    // k.t().ry = -18;
+    k.t().x += 5;
+    k.t().z += 1;
+    k.t().rx = 10;
+    k.t().y += -2;
+  });
+
+  key_th_top3.Configure([&](Key& k) {
+    k.name = "key_th_top3";
+    k.type = KeyType::SA;
+    k.SetParent(key_th3);
+    k.SetPosition(0, 19, 3);
+    // k.t().x += -1;
+    // k.t().y += 4;
+    // k.t().rz = -7;
+    // k.t().ry = -18;
+    k.t().x += 5;
+    k.t().rx = 10;
+    k.t().y += -2;
+  });
+
+  // Start tweaking th1 some more without affecting the children.
+  key_th1.Configure([&](Key& k) {
+    k.AddTransform();
+    k.t().y += -12;
+    //k.t().rz = -7;
+    k.t().rx = -15;
+    k.t().rz = -10;
+    k.t().ry = 5;
+
+    k.AddTransform();
+    k.t().z += 7;
+    k.t().x += -1.5;
+  });
+
+  key_th_top1.Configure([&](Key& k) {
+    k.name = "key_th_top1";
+    k.type = KeyType::SA;
+    k.SetParent(key_th1);
+    k.SetPosition(0, 19, 0);
+    // k.t().x += -1;
+    // k.t().y += 4;
+    // k.t().rz = -7;
+    // k.t().rx = 15;
+    // k.t().ry = -18;
+    //k.t().x += 5;
+    k.t().z += 4;
+    k.t().rx = 10;
+    k.t().y += -1;
+  });
+
+  /*
   // Second thumb key.
   key_delete.Configure([&](Key& k) {
     k.name = "key_delete";
@@ -111,6 +200,7 @@ KeyData::KeyData(TransformList key_origin) {
     k.SetParent(key_delete);
     k.SetPosition(0, 10 + kDefaultKeySpacing, 0);
   });
+  */
 
   //
   // Main bowl keys
@@ -122,7 +212,9 @@ KeyData::KeyData(TransformList key_origin) {
     k.name = "d";
     k.SetParent(key_origin);
     k.SetPosition(26.40, 50.32, 17.87);
-    k.t().ry = -15;
+    //k.t().ry = -15;
+    k.t().ry = -20;
+    k.t().rx = -7;
   });
 
   key_f.Configure([&](Key& k) {
@@ -147,6 +239,9 @@ KeyData::KeyData(TransformList key_origin) {
     k.SetParent(key_f);
     k.SetPosition(18.65, -1.310, 3.305);
     k.t().ry = -10;
+
+    // ADJUSTMENT
+    // k.t().x += -.4;
   });
 
   key_s.Configure([&](Key& k) {
@@ -170,6 +265,11 @@ KeyData::KeyData(TransformList key_origin) {
 
     k.SetParent(key_s);
     k.SetPosition(-20.887, -6.170, 5.358);
+
+    k.t().y += -13;
+    //k.t().z += -3;
+    k.t().x += -5;
+    k.t().rz = 15;
   });
 
   key_caps.Configure([&](Key& k) {
@@ -217,6 +317,16 @@ KeyData::KeyData(TransformList key_origin) {
     k.name = "w";
     k.SetParent(key_s);
   });
+
+  /*
+
+  key_w2;
+  key_w2.Configure([&](Key& k) {
+    k.name = "w2";
+    k.SetParent(key_w2);
+    k.SetPosition(j
+  });
+  */
 
   key_2 = GetRotatedKey(kSColumnRadius, true);
   key_2.Configure([&](Key& k) {
@@ -328,7 +438,7 @@ KeyData::KeyData(TransformList key_origin) {
   // Keys are measured from the tip of the switch and by default keys are measured from the
   // tip of the cap. Adjust the keys position so that the origin is at the switch top.
   double switch_top_z_offset = 10;
-  for (Key* key : all_keys()) {
+  for (Key* key : grid.keys()) {
     key->AddTransform();
     key->disable_switch_z_offset = true;
     key->t().z -= 10;

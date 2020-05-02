@@ -42,25 +42,31 @@ struct KeyData {
   Key key_left_arrow;
   Key key_right_arrow;
 
+  Key key_th1;
+  Key key_th2;
+  Key key_th3;
+  Key key_th_top1;
+  Key key_th_top2;
+  Key key_th_top3;
+
   Key key_backspace;
   Key key_delete;
-  Key key_end;
-  Key key_home;
-  Key key_ctrl;
   Key key_alt;
+  Key key_ctrl;
+  Key key_home;
+  Key key_end;
 
   // clang-format off
   KeyGrid grid {{
-    { nullptr,     nullptr,     nullptr,     &key_3,           &key_4,            nullptr},
-    { nullptr,     &key_q,      &key_w,      &key_e,           &key_r,            &key_t},
-    { &key_caps,   &key_a,      &key_s,      &key_d,           &key_f,            &key_g},
-    { &key_shift,  &key_z,      &key_x,      &key_c,           &key_v,            &key_b},
-    { nullptr,     nullptr,     nullptr,     &key_left_arrow,  nullptr,           nullptr},
+    { &key_q,      &key_w,      &key_e,           &key_r,            &key_t},
+    { &key_a,      &key_s,      &key_d,           &key_f,            &key_g},
+    { &key_z,      &key_x,      &key_c,           &key_v,            &key_b},
   }};
   // clang-format on
 
   std::vector<Key*> thumb_keys() {
-    return {&key_delete, &key_backspace, &key_ctrl, &key_alt, &key_home, &key_end};
+    //return {&key_th1, &key_th2, &key_th3, &key_th_top1, &key_th_top2, &key_th_bottom1};
+    return {&key_th1, &key_th2, &key_th3, &key_th_top1, &key_th_top2, &key_th_top3};
   }
 
   std::vector<Key*> all_keys() {

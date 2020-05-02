@@ -10,7 +10,7 @@
 using namespace scad;
 
 constexpr bool kWriteTestKeys = true;
-constexpr bool kIncludeDactylRef = true;
+constexpr bool kIncludeDactylRef = false;
 // Add the caps into the stl for testing.
 constexpr bool kAddCaps = false;
 
@@ -35,7 +35,7 @@ int main() {
 
   if (kWriteTestKeys) {
     std::vector<Shape> test_shapes;
-    std::vector<Key*> test_keys = {&d.key_3, &d.key_e, &d.key_4, &d.key_5, &d.key_d};
+     std::vector<Key*> test_keys = {&d.key_th1, &d.key_th2, &d.key_th3, &d.key_th_top1, &d.key_th_top2, &d.key_d};
     test_keys = d.all_keys();
     for (Key* key : test_keys) {
       key->add_side_nub = false;
