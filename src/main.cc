@@ -27,7 +27,7 @@ Shape ConnectMainKeys(KeyData& d);
 int main() {
   printf("generating..\n");
   TransformList key_origin;
-  key_origin.RotateY(-10);
+  //  key_origin.RotateY(10);
   key_origin.Translate(-20, -40, 3);
 
   // This is where all of the logic to position the keys is done. Everything below is cosmetic
@@ -38,16 +38,12 @@ int main() {
     std::vector<Shape> test_shapes;
     std::vector<Key*> test_keys = {
         //&d.key_th1, &d.key_th2, &d.key_th3, &d.key_th_top3, &d.key_th_top2,
-        &d.key_q,
-        &d.key_tab,
-        &d.key_a,
-        &d.key_s,
-        &d.key_w,
-        &d.key_d,
-        &d.key_f,
-        &d.key_e,
-        &d.key_3,
-        //  &d.key_a, &d.key_caps,
+        &d.key_th1,
+        &d.key_th2,
+        &d.key_th3,
+        &d.key_th_top2,
+        &d.key_th_top3,
+        //   &d.key_d,
     };
     // &d.key_q, &d.key_w, &d.key_f, &d.key_3, &d.key_tab};
     // test_keys = d.all_keys();
@@ -76,6 +72,9 @@ int main() {
   // d.key_b.extra_width_bottom = 3;
   d.key_th1.extra_width_top = 4;
   d.key_th1.extra_width_left = 2;
+  d.key_th2.extra_width_bottom = 6;
+  d.key_th_top3.extra_width_top = 4;
+  d.key_th3.extra_width_right = 2;
 
   std::vector<Shape> shapes;
 
@@ -90,6 +89,11 @@ int main() {
                        d.key_tab.GetBottomLeft(),
                        d.key_q.GetTopRight(),
                    })));
+  shapes.push_back(TriFan(d.key_q.GetTopRight(),
+                          {
+                              d.key_tab.GetBottomLeft(),
+                              d.key_tab.GetBottomRight(),
+                          }));
 
   shapes.push_back(TriFan(d.key_z.GetTopLeft(),
                           {
@@ -120,7 +124,7 @@ int main() {
                               d.key_a.GetBottomRight(),
                               d.key_x.GetBottomLeft(),
                               d.key_x.GetBottomRight(),
-                              //d.key_c.GetBottomLeft(),
+                              // d.key_c.GetBottomLeft(),
                               d.key_left_arrow.GetTopLeft(),
                               d.key_left_arrow.GetBottomLeft(),
                               d.key_z.GetBottomRight(),
@@ -155,7 +159,7 @@ int main() {
                           {
                               d.key_th1.GetBottomRight(),
                               d.key_th1.GetTopRight(),
-                              //d.key_left_arrow.GetBottomRight(),
+                              // d.key_left_arrow.GetBottomRight(),
                               d.key_th2.GetTopLeft(),
                           }));
   shapes.push_back(TriFan(d.key_th1.GetTopLeft(),
@@ -163,6 +167,42 @@ int main() {
                               d.key_left_arrow.GetBottomRight(),
                               d.key_th2.GetTopLeft(),
                               d.key_th1.GetTopRight(),
+                          }));
+
+  shapes.push_back(TriFan(d.key_th1.GetTopLeft(),
+                          {
+                              d.key_left_arrow.GetBottomRight(),
+                              d.key_th2.GetTopLeft(),
+                              d.key_th1.GetTopRight(),
+                          }));
+  shapes.push_back(TriFan(d.key_th1.GetTopLeft(),
+                          {
+                              d.key_left_arrow.GetBottomRight(),
+                              d.key_th2.GetTopLeft(),
+                              d.key_th1.GetTopRight(),
+                          }));
+  shapes.push_back(TriFan(
+      d.key_left_arrow.GetBottomLeft(),
+      {
+          d.key_left_arrow.GetBottomRight(), d.key_th1.GetTopLeft(), d.key_th1.GetBottomLeft(),
+          // connect more around?
+      }));
+  shapes.push_back(TriFan(d.key_th_top2.GetTopRight(),
+                          {
+                              d.key_th_top2.GetTopLeft(),
+                              d.key_b.GetBottomRight(),
+                              d.key_b.GetTopRight(),
+                          }));
+  shapes.push_back(TriFan(d.key_th_top2.GetTopRight(),
+                          {
+                              d.key_th_top3.GetTopLeft(),
+                              d.key_th_top3.GetTopRight(),
+                          }));
+
+  shapes.push_back(TriFan(d.key_th_top3.GetBottomRight(),
+                          {
+                              d.key_th3.GetTopRight(),
+                              d.key_th3.GetBottomRight(),
                           }));
 
   //
@@ -208,65 +248,57 @@ int main() {
 
     std::vector<WallPoint> wall_points = {
         // Start top left and go clockwise
-        {d.key_plus.GetTopLeft(), up},
-        {d.key_plus.GetTopRight(), up, 0, .3},
+        {d.key_tab.GetTopLeft(), up},
+        {d.key_tab.GetTopRight(), up},
 
-        {d.key_1.GetTopLeft(), up, 0, .5},
-        {d.key_1.GetTopRight().RotateFront(0, 0, 30), up, 0, 1},
+        {d.key_w.GetTopLeft(), up},
+        {d.key_w.GetTopRight(), up},
 
-        {d.key_2.GetTopLeft(), up, 0, .3},
-        {d.key_2.GetTopRight(), up},
+        {d.key_e.GetTopLeft(), up},
+        {d.key_e.GetTopRight(), up},
 
-        {d.key_3.GetTopLeft(), up},
-        {d.key_3.GetTopRight(), up},
+        {d.key_r.GetTopLeft(), up},
+        {d.key_r.GetTopRight(), up},
 
-        {d.key_4.GetTopLeft(), up},
-        {d.key_4.GetTopRight(), up},
-        {d.key_5.GetTopRight(), up},
-        {d.key_5.GetTopRight(), right},
-        {d.key_5.GetBottomRight(), right},
-
+        {d.key_t.GetTopLeft(), up},
+        {d.key_t.GetTopRight(), up},
         {d.key_t.GetTopRight(), right},
         {d.key_t.GetBottomRight(), right},
 
         {d.key_g.GetTopRight(), right},
-        {d.key_g.GetBottomRight(), right, 1, .5},
+        {d.key_g.GetBottomRight(), right},
 
-        {d.key_ctrl.GetTopLeft().RotateFront(0, 0, -15), up, 1, .5},
-        {d.key_ctrl.GetTopRight(), up},
+        {d.key_b.GetTopRight(), right},
 
-        {d.key_alt.GetTopLeft(), up},
-        {d.key_alt.GetTopRight(), up, 0, .5},
-        {d.key_alt.GetTopRight(), right, 0, .5},
-        {d.key_alt.GetBottomRight(), right},
+        {d.key_th_top2.GetTopRight().RotateFront(0, 0, -20), up, 0, 0},
 
-        {d.key_home.GetTopRight(), right},
-        {d.key_home.GetBottomRight(), right},
+        {d.key_th_top3.GetTopRight(), up},
+        {d.key_th_top3.GetTopRight(), right},
+        {d.key_th_top3.GetBottomRight(), right},
 
-        {d.key_end.GetTopRight(), right},
-        {d.key_end.GetBottomRight(), right, 0, .5},
-        {d.key_end.GetBottomRight(), down, 0, .5},
-        {d.key_end.GetBottomLeft(), down},
+        {d.key_th3.GetBottomRight(), right},
+        {d.key_th3.GetBottomRight(), down},
+        {d.key_th3.GetBottomLeft(), down},
 
-        {d.key_backspace.GetBottomLeft(), down},
+        {d.key_th2.GetBottomRight(), down},
+        {d.key_th2.GetBottomLeft(), down},
 
-        //{slash_bottom_right, down},
+        {d.key_th1.GetBottomRight(), down},
+        {d.key_th1.GetBottomLeft(), down},
 
-        {d.key_tilde.GetBottomRight(), down},
-        {d.key_tilde.GetBottomLeft(), down},
+        {d.key_left_arrow.GetBottomLeft().RotateFront(0, 0, -20), down, 0, 1},
 
-        {d.key_shift.GetBottomLeft(), down, 0, .75},
-        {d.key_shift.GetBottomLeft(), left, 0, .5},
-        {d.key_shift.GetTopLeft(), left, 0, .5},
+        {d.key_z.GetBottomRight(), down},
+        {d.key_z.GetBottomLeft(), down},
+        {d.key_z.GetBottomLeft(), left},
 
         {d.key_caps.GetBottomLeft(), left},
         {d.key_caps.GetTopLeft(), left},
 
-        {d.key_tab.GetBottomLeft(), left},
         {d.key_tab.GetTopLeft(), left},
 
-        {d.key_plus.GetBottomLeft(), left},
-        {d.key_plus.GetTopLeft(), left},
+        //{d.key_1.GetTopRight().RotateFront(0, 0, 30), up, 0, 1},
+
     };
 
     std::vector<std::vector<Shape>> wall_slices;
@@ -316,7 +348,7 @@ int main() {
       auto& slice = wall_slices[i];
       auto& next_slice = wall_slices[(i + 1) % wall_slices.size()];
       for (size_t j = 0; j < slice.size(); ++j) {
-        //    shapes.push_back(Hull(slice[j], next_slice[j]));
+        shapes.push_back(Hull(slice[j], next_slice[j]));
         // Uncomment for testing. Much faster and easier to visualize.
         // shapes.push_back(slice[j]);
       }

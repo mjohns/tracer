@@ -31,6 +31,12 @@ namespace {
   // r a little more ..
   // thumb and b collision make sure it works .. supports in the way and inverse cap does not play well with extra z or sa type?
 
+  // v4 notes
+  // 3 more z .. maybe flatter ? maybe fine. do i really need this key?
+  // tab is conflicting with q.. needs to be higher in z. probably more y too.
+  // more z for w and q (small)
+  // th3 needs more z.
+
 
 
 constexpr double kDefaultKeySpacing = 19;
@@ -162,6 +168,8 @@ KeyData::KeyData(TransformList key_origin) {
     k.t().x += 7;
     k.t().rx = 10;
    // k.t().y += -2;
+    k.AddTransform();
+    k.t().z = 1.5;
   });
 
   // Start tweaking th1 some more without affecting the children.
@@ -325,7 +333,7 @@ KeyData::KeyData(TransformList key_origin) {
     k.SetParent(key_s);
 
     k.AddTransform();
-    k.t().z = 2;
+    k.t().z = 2.6;
   });
 
   /*
@@ -441,6 +449,7 @@ KeyData::KeyData(TransformList key_origin) {
     k.name = "tab";
     k.SetParent(key_w);
     k.SetPosition(-18.5 - 2.7, -.4, 3);
+    k.SetPosition(-18.5 - 2.7, 2.5, 5);
     k.t().ry = 10;
   });
 
