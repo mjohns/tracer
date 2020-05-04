@@ -8,6 +8,14 @@
 namespace scad {
 namespace {
 
+// v1 print notes:
+// thumb could be higher.
+// more space for top thumb keys.
+// pinky can be lower. maybe also ring finger down in y direction and z ?
+// thumb rotate z more angled outwards
+// probably should try and incorporeate a dsa 1.5 for middle finger down. maybe a palm down motion?
+// thumb inner could be lower in z, the height is not important for thsfsf
+
 constexpr double kDefaultKeySpacing = 19;
 // The direct distance between switch tops in the bowl.
 constexpr double kBowlKeySpacing = 18;
@@ -74,9 +82,12 @@ KeyData::KeyData(TransformList key_origin) {
     k.SetPosition(60, -9.18, 42.83);
     k.t().x += -8;
     k.t().y += 4;
+    k.t().z += 5;
     k.t().rz = -7;
     k.t().rx = 15;
     k.t().ry = 30;
+
+    k.t().x += -4;
   });
 
   key_th2.Configure([&](Key& k) {
@@ -115,10 +126,10 @@ KeyData::KeyData(TransformList key_origin) {
     // k.t().rz = -7;
     // k.t().rx = 15;
     // k.t().ry = -18;
-    k.t().x += 5;
-    k.t().z += 1;
+    k.t().x += 7;
+    k.t().z += 2;
     k.t().rx = 10;
-    k.t().y += -2;
+    //k.t().y += -2;
   });
 
   key_th_top3.Configure([&](Key& k) {
@@ -130,22 +141,22 @@ KeyData::KeyData(TransformList key_origin) {
     // k.t().y += 4;
     // k.t().rz = -7;
     // k.t().ry = -18;
-    k.t().x += 5;
+    k.t().x += 7;
     k.t().rx = 10;
-    k.t().y += -2;
+   // k.t().y += -2;
   });
 
   // Start tweaking th1 some more without affecting the children.
   key_th1.Configure([&](Key& k) {
     k.AddTransform();
     k.t().y += -12;
-    //k.t().rz = -7;
+    // k.t().rz = -7;
     k.t().rx = -15;
     k.t().rz = -10;
     k.t().ry = 5;
 
     k.AddTransform();
-    k.t().z += 7;
+    k.t().z += 3;
     k.t().x += -1.5;
   });
 
@@ -159,48 +170,12 @@ KeyData::KeyData(TransformList key_origin) {
     // k.t().rz = -7;
     // k.t().rx = 15;
     // k.t().ry = -18;
-    //k.t().x += 5;
+    // k.t().x += 5;
     k.t().z += 4;
     k.t().rx = 10;
     k.t().y += -1;
   });
 
-  /*
-  // Second thumb key.
-  key_delete.Configure([&](Key& k) {
-    k.name = "key_delete";
-    k.SetParent(key_backspace);
-    k.SetPosition(kDefaultKeySpacing, 0, 0);
-  });
-
-  // Bottom side key.
-  key_end.Configure([&](Key& k) {
-    k.name = "key_end";
-    k.SetParent(key_delete);
-    k.SetPosition(kDefaultKeySpacing, -9, 0);
-  });
-
-  // Middle side key.
-  key_home.Configure([&](Key& k) {
-    k.name = "key_home";
-    k.SetParent(key_delete);
-    k.SetPosition(kDefaultKeySpacing, 10, 0);
-  });
-
-  // Top side key;
-  key_alt.Configure([&](Key& k) {
-    k.name = "key_alt";
-    k.SetParent(key_delete);
-    k.SetPosition(kDefaultKeySpacing, 10 + kDefaultKeySpacing, 0);
-  });
-
-  // Top left key.
-  key_ctrl.Configure([&](Key& k) {
-    k.name = "key_ctrl";
-    k.SetParent(key_delete);
-    k.SetPosition(0, 10 + kDefaultKeySpacing, 0);
-  });
-  */
 
   //
   // Main bowl keys
@@ -212,8 +187,8 @@ KeyData::KeyData(TransformList key_origin) {
     k.name = "d";
     k.SetParent(key_origin);
     k.SetPosition(26.40, 50.32, 17.87);
-    //k.t().ry = -15;
-    k.t().ry = -20;
+    // k.t().ry = -15;
+    k.t().ry = -18;
     k.t().rx = -7;
   });
 
@@ -266,10 +241,10 @@ KeyData::KeyData(TransformList key_origin) {
     k.SetParent(key_s);
     k.SetPosition(-20.887, -6.170, 5.358);
 
-    k.t().y += -13;
-    //k.t().z += -3;
+    k.t().y += -15;
+    k.t().z += -2;
     k.t().x += -5;
-    k.t().rz = 15;
+    k.t().rz = 12;
   });
 
   key_caps.Configure([&](Key& k) {
@@ -280,8 +255,9 @@ KeyData::KeyData(TransformList key_origin) {
     // k.t().ry = -5;
 
     k.SetParent(key_a);
-    k.SetPosition(-22.597, 4.000, 0.207);
-    k.t().ry = 5;
+    k.SetPosition(-22.597, 0.000, 0.207);
+    k.t().ry = 10;
+    k.t().z += 3;
   });
 
   // D Column
@@ -392,10 +368,12 @@ KeyData::KeyData(TransformList key_origin) {
   });
 
   // A column
-  key_q = GetRotatedKey(kAColumnRadius, true);
+  //key_q = GetRotatedKey(kAColumnRadius, true);
   key_q.Configure([&](Key& k) {
     k.name = "q";
-    k.SetParent(key_a);
+    k.SetParent(key_s);
+    k.SetPosition(-18.5, 8, 3);
+    k.t().ry = 10;
   });
 
   key_1 = GetRotatedKey(kAColumnRadius, true);

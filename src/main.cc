@@ -35,8 +35,8 @@ int main() {
 
   if (kWriteTestKeys) {
     std::vector<Shape> test_shapes;
-     std::vector<Key*> test_keys = {&d.key_th1, &d.key_th2, &d.key_th3, &d.key_th_top1, &d.key_th_top2, &d.key_d};
-    test_keys = d.all_keys();
+     std::vector<Key*> test_keys = {&d.key_th1, &d.key_th2, &d.key_th3, &d.key_th_top3, &d.key_th_top2, &d.key_d, &d.key_g, &d.key_s, &d.key_a, &d.key_caps, &d.key_q, &d.key_w, &d.key_f};
+    //test_keys = d.all_keys();
     for (Key* key : test_keys) {
       key->add_side_nub = false;
       key->extra_z = 4;
