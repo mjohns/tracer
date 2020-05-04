@@ -9,7 +9,7 @@
 
 using namespace scad;
 
-constexpr bool kWriteTestKeys = true;
+constexpr bool kWriteTestKeys = false;
 constexpr bool kIncludeDactylRef = false;
 // Add the caps into the stl for testing.
 constexpr bool kAddCaps = false;
@@ -27,6 +27,7 @@ Shape ConnectMainKeys(KeyData& d);
 int main() {
   printf("generating..\n");
   TransformList key_origin;
+  key_origin.RotateY(-10);
   key_origin.Translate(-20, -40, 3);
 
   // This is where all of the logic to position the keys is done. Everything below is cosmetic
@@ -35,8 +36,21 @@ int main() {
 
   if (kWriteTestKeys) {
     std::vector<Shape> test_shapes;
-     std::vector<Key*> test_keys = {&d.key_th1, &d.key_th2, &d.key_th3, &d.key_th_top3, &d.key_th_top2, &d.key_d, &d.key_g, &d.key_s, &d.key_a, &d.key_caps, &d.key_q, &d.key_w, &d.key_f};
-    //test_keys = d.all_keys();
+    std::vector<Key*> test_keys = {
+        //&d.key_th1, &d.key_th2, &d.key_th3, &d.key_th_top3, &d.key_th_top2,
+        &d.key_q,
+        &d.key_tab,
+        &d.key_a,
+        &d.key_s,
+        &d.key_w,
+        &d.key_d,
+        &d.key_f,
+        &d.key_e,
+        &d.key_3,
+        //  &d.key_a, &d.key_caps,
+    };
+    // &d.key_q, &d.key_w, &d.key_f, &d.key_3, &d.key_tab};
+    // test_keys = d.all_keys();
     for (Key* key : test_keys) {
       key->add_side_nub = false;
       key->extra_z = 4;
@@ -51,112 +65,121 @@ int main() {
       test_shapes.push_back(dactyl_manuform.Color("green", .6));
       //  test_shapes.push_back(dactyl_cc.Color("blue", .3));
     }
-    UnionAll(test_shapes).WriteToFile("test_keys.scad");
+    UnionAll(test_shapes).Subtract(d.key_th_top2.GetInverseCap()).WriteToFile("test_keys.scad");
     return 0;
   }
 
   // Set all of the widths here. This must be done before calling any of GetTopLeft etc.
 
-  d.key_backspace.extra_width_bottom = 2;
-  d.key_backspace.extra_width_left = 2;
-  d.key_delete.extra_width_bottom = 2;
-  d.key_end.extra_width_bottom = 2;
-  d.key_ctrl.extra_width_top = 2;
-  d.key_alt.extra_width_top = 2;
-  d.key_alt.extra_width_right = 2;
-  d.key_alt.extra_width_left = 2;
-  d.key_home.extra_width_right = 2;
-  d.key_home.extra_width_left = 2;
-  d.key_home.extra_width_top = 2;
-  d.key_end.extra_width_top = 2;
-  d.key_end.extra_width_right = 2;
-  d.key_end.extra_width_left = 2;
+  d.key_q.extra_z = 2;
 
-  // left wall
-  for (Key* key : d.grid.column(0)) {
-    if (key) {
-      key->extra_width_left = 4;
-    }
-  }
-
-  d.key_5.extra_width_right = 2;
-  d.key_t.extra_width_right = 3;
-  d.key_g.extra_width_right = 3;
-
-  for (Key* key : d.grid.row(0)) {
-    // top row
-    if (key) {
-      key->extra_width_top = 2;
-    }
-  }
-  d.key_b.extra_width_bottom = 3;
+  // d.key_b.extra_width_bottom = 3;
+  d.key_th1.extra_width_top = 4;
+  d.key_th1.extra_width_left = 2;
 
   std::vector<Shape> shapes;
+
+  shapes.push_back(
+      Union(Tri(d.key_caps.GetTopRight(), d.key_a.GetTopLeft(), d.key_q.GetBottomLeft()),
+            TriFan(d.key_q.GetTopLeft(),
+                   {
+                       d.key_q.GetBottomLeft(),
+                       d.key_caps.GetTopRight(),
+                       d.key_caps.GetTopLeft(),
+                       d.key_tab.GetTopLeft(),
+                       d.key_tab.GetBottomLeft(),
+                       d.key_q.GetTopRight(),
+                   })));
+
+  shapes.push_back(TriFan(d.key_z.GetTopLeft(),
+                          {
+                              d.key_a.GetBottomLeft(),
+                              d.key_caps.GetBottomRight(),
+                              d.key_caps.GetBottomLeft(),
+                              d.key_z.GetBottomLeft(),
+                          }));
+  shapes.push_back(TriFan(d.key_s.GetTopLeft(),
+                          {
+                              d.key_w.GetBottomLeft(),
+                              d.key_tab.GetBottomRight(),
+                              d.key_q.GetTopRight(),
+                              d.key_q.GetBottomRight(),
+                              d.key_s.GetBottomLeft(),
+                          }));
+
+  shapes.push_back(TriFan(d.key_x.GetTopLeft(),
+                          {
+                              d.key_s.GetBottomLeft(),
+                              d.key_q.GetBottomRight(),
+                              d.key_a.GetTopRight(),
+                              d.key_a.GetBottomRight(),
+                              d.key_x.GetBottomLeft(),
+                          }));
+  shapes.push_back(TriFan(d.key_z.GetTopRight(),
+                          {
+                              d.key_a.GetBottomRight(),
+                              d.key_x.GetBottomLeft(),
+                              d.key_x.GetBottomRight(),
+                              //d.key_c.GetBottomLeft(),
+                              d.key_left_arrow.GetTopLeft(),
+                              d.key_left_arrow.GetBottomLeft(),
+                              d.key_z.GetBottomRight(),
+                          }));
+  shapes.push_back(TriFan(d.key_c.GetBottomLeft(),
+                          {
+                              d.key_x.GetBottomRight(),
+                              d.key_left_arrow.GetTopLeft(),
+                          }));
+  shapes.push_back(TriFan(d.key_c.GetBottomLeft(),
+                          {
+                              d.key_x.GetBottomRight(),
+                              d.key_left_arrow.GetTopLeft(),
+                          }));
+
+  shapes.push_back(TriFan(d.key_b.GetBottomLeft(),
+                          {
+                              d.key_th_top2.GetTopLeft(),
+                              d.key_th_top2.GetBottomLeft(),
+                              d.key_th2.GetTopLeft(),
+                              d.key_v.GetBottomRight(),
+                          }));
+  shapes.push_back(TriFan(d.key_v.GetBottomLeft(),
+                          {
+                              d.key_v.GetBottomRight(),
+                              d.key_th2.GetTopLeft(),
+                              d.key_left_arrow.GetBottomRight(),
+                              d.key_left_arrow.GetTopRight(),
+                              d.key_c.GetBottomRight(),
+                          }));
+  shapes.push_back(TriFan(d.key_th2.GetBottomLeft(),
+                          {
+                              d.key_th1.GetBottomRight(),
+                              d.key_th1.GetTopRight(),
+                              //d.key_left_arrow.GetBottomRight(),
+                              d.key_th2.GetTopLeft(),
+                          }));
+  shapes.push_back(TriFan(d.key_th1.GetTopLeft(),
+                          {
+                              d.key_left_arrow.GetBottomRight(),
+                              d.key_th2.GetTopLeft(),
+                              d.key_th1.GetTopRight(),
+                          }));
 
   //
   // Thumb plate
   //
 
-  shapes.push_back(Union(ConnectHorizontal(d.key_ctrl, d.key_alt),
-                         ConnectHorizontal(d.key_backspace, d.key_delete),
-                         ConnectVertical(d.key_ctrl, d.key_delete),
-                         Tri(d.key_end.GetBottomLeft(),
-                             d.key_delete.GetBottomRight(),
-                             d.key_backspace.GetBottomLeft())));
-
   shapes.push_back(ConnectMainKeys(d));
-
-  shapes.push_back(TriFan(d.key_ctrl.GetTopLeft(),
-                          {
-                              d.key_b.GetBottomRight(),
-                              d.key_b.GetTopRight(),
-                              d.key_g.GetBottomRight(),
-                          })
-
-  );
-
-  // These transforms with TranslateFront are moving the connectors down in the z direction to
-  // reduce the vertical jumps.
-  TransformList slash_bottom_right = d.key_slash.GetBottomRight().TranslateFront(0, 0, -1);
-
-  shapes.push_back(TriFan(d.key_backspace.GetBottomLeft(),
-                          {
-                              d.key_backspace.GetBottomLeft(),
-                              d.key_right_arrow.GetBottomRight(),
-                              d.key_right_arrow.GetBottomLeft().TranslateFront(0, 0, -1),
-                              d.key_left_arrow.GetBottomRight().TranslateFront(0, 0, -1),
-                              d.key_left_arrow.GetBottomLeft(),
-                              slash_bottom_right,
-                          }));
-  shapes.push_back(TriFan(d.key_tilde.GetBottomRight(),
-                          {
-                              d.key_slash.GetBottomLeft(),
-                              slash_bottom_right,
-                          }));
-  shapes.push_back(TriFan(d.key_delete.GetTopLeft(),
-                          {
-                              d.key_ctrl.GetTopLeft(),
-                              d.key_b.GetBottomRight(),
-                              d.key_backspace.GetTopLeft(),
-                          }));
-  shapes.push_back(TriFan(d.key_b.GetBottomLeft(),
-                          {
-                              d.key_b.GetBottomRight(),
-                              d.key_backspace.GetTopLeft(),
-                              d.key_backspace.GetTopLeft(),
-                              d.key_right_arrow.GetBottomRight(),
-                              d.key_right_arrow.GetTopRight(),
-                              d.key_v.GetBottomRight(),
-                          }));
-
-  // Bottom right corner.
-  shapes.push_back(TriFan(d.key_shift.GetBottomRight(),
-                          {
-                              d.key_z.GetBottomLeft(),
-                              d.key_tilde.GetTopLeft(),
-                              d.key_tilde.GetBottomLeft(),
-                              d.key_shift.GetBottomLeft(),
-                          }));
+  shapes.push_back(Union(ConnectVertical(d.key_q, d.key_a),
+                         ConnectVertical(d.key_a, d.key_z),
+                         ConnectHorizontal(d.key_caps, d.key_a),
+                         ConnectHorizontal(d.key_th2, d.key_th3),
+                         ConnectHorizontal(d.key_th_top2, d.key_th_top3),
+                         ConnectVertical(d.key_th_top2, d.key_th2),
+                         ConnectVertical(d.key_th_top3, d.key_th3),
+                         ConnectDiagonal(d.key_th_top2, d.key_th_top3, d.key_th3, d.key_th2),
+                         // ConnectHorizontal(d.key_a, d.key_x),
+                         ConnectHorizontal(d.key_tab, d.key_w)));
 
   //
   // Make the wall
@@ -227,7 +250,7 @@ int main() {
 
         {d.key_backspace.GetBottomLeft(), down},
 
-        {slash_bottom_right, down},
+        //{slash_bottom_right, down},
 
         {d.key_tilde.GetBottomRight(), down},
         {d.key_tilde.GetBottomLeft(), down},
@@ -293,7 +316,7 @@ int main() {
       auto& slice = wall_slices[i];
       auto& next_slice = wall_slices[(i + 1) % wall_slices.size()];
       for (size_t j = 0; j < slice.size(); ++j) {
-        shapes.push_back(Hull(slice[j], next_slice[j]));
+        //    shapes.push_back(Hull(slice[j], next_slice[j]));
         // Uncomment for testing. Much faster and easier to visualize.
         // shapes.push_back(slice[j]);
       }
@@ -339,11 +362,13 @@ int main() {
     screw_right_mid.z = 0;
     screw_right_mid.y += -.9;
 
+    /*
     shapes.push_back(Union(screw_insert.Translate(screw_left_top),
                            screw_insert.Translate(screw_right_top),
                            screw_insert.Translate(screw_right_mid),
                            screw_insert.Translate(screw_right_bottom),
                            screw_insert.Translate(screw_left_bottom)));
+                           */
     screw_holes = {
         screw_hole.Translate(screw_left_top),
         screw_hole.Translate(screw_right_top),
@@ -354,10 +379,8 @@ int main() {
   }
 
   std::vector<Shape> negative_shapes;
-  AddShapes(&negative_shapes, screw_holes);
+  // AddShapes(&negative_shapes, screw_holes);
   // Cut off the parts sticking up into the thumb plate.
-  negative_shapes.push_back(
-      d.key_backspace.GetTopLeft().Apply(Cube(50, 50, 6).TranslateZ(3)).Color("red"));
 
   // Cut out holes for cords. Inserts can be printed to fit in.
   Shape connector_hole = Cube(10, 20, 10).TranslateZ(12 / 2);
@@ -418,13 +441,16 @@ int main() {
 Shape ConnectMainKeys(KeyData& d) {
   std::vector<Shape> shapes;
   for (int r = 0; r < d.grid.num_rows(); ++r) {
-    for (int c = 0; c < d.grid.num_columns(); ++c) {
+    for (int c = 2; c < d.grid.num_columns(); ++c) {
       Key* key = d.grid.get_key(r, c);
       if (!key) {
         // No key at this location.
         continue;
       }
       Key* left = d.grid.get_key(r, c - 1);
+      if (c == 2) {
+        left = nullptr;
+      }
       Key* top_left = d.grid.get_key(r - 1, c - 1);
       Key* top = d.grid.get_key(r - 1, c);
 

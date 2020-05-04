@@ -14,7 +14,24 @@ namespace {
 // pinky can be lower. maybe also ring finger down in y direction and z ?
 // thumb rotate z more angled outwards
 // probably should try and incorporeate a dsa 1.5 for middle finger down. maybe a palm down motion?
-// thumb inner could be lower in z, the height is not important for thsfsf
+// thumb inner could be lower in z, the height is not important for this
+
+// v2 notes:
+// less angling for top thumbs?
+// s down y.
+// more z for top row
+  // caps lock up y a little
+  // q parented off w.
+
+  // v3 notes:
+  // q can go onto pinky column
+  // w neighbor higher and use 1.25
+  // add 3 key
+  // thumb move left?
+  // r a little more ..
+  // thumb and b collision make sure it works .. supports in the way and inverse cap does not play well with extra z or sa type?
+
+
 
 constexpr double kDefaultKeySpacing = 19;
 // The direct distance between switch tops in the bowl.
@@ -88,6 +105,7 @@ KeyData::KeyData(TransformList key_origin) {
     k.t().ry = 30;
 
     k.t().x += -4;
+    k.t().x += -2;
   });
 
   key_th2.Configure([&](Key& k) {
@@ -118,7 +136,7 @@ KeyData::KeyData(TransformList key_origin) {
 
   key_th_top2.Configure([&](Key& k) {
     k.name = "key_th_top2";
-    k.type = KeyType::SA;
+    //k.type = KeyType::SA;
     k.SetParent(key_th2);
     k.SetPosition(0, 19, 3);
     // k.t().x += -1;
@@ -134,7 +152,7 @@ KeyData::KeyData(TransformList key_origin) {
 
   key_th_top3.Configure([&](Key& k) {
     k.name = "key_th_top3";
-    k.type = KeyType::SA;
+    //k.type = KeyType::SA;
     k.SetParent(key_th3);
     k.SetPosition(0, 19, 3);
     // k.t().x += -1;
@@ -158,6 +176,10 @@ KeyData::KeyData(TransformList key_origin) {
     k.AddTransform();
     k.t().z += 3;
     k.t().x += -1.5;
+
+    // This will move it down in absolute z coords.
+    auto& p_t = k.parent_transforms.AddTransform();
+    p_t.z = -5.2;
   });
 
   key_th_top1.Configure([&](Key& k) {
@@ -229,6 +251,7 @@ KeyData::KeyData(TransformList key_origin) {
     k.SetParent(key_d);
     k.SetPosition(-19.571, -0.090, 5.430);
     k.t().ry = 5;
+    k.t().y += -2;
   });
 
   key_a.Configure([&](Key& k) {
@@ -258,6 +281,7 @@ KeyData::KeyData(TransformList key_origin) {
     k.SetPosition(-22.597, 0.000, 0.207);
     k.t().ry = 10;
     k.t().z += 3;
+    k.t().y += 3;
   });
 
   // D Column
@@ -265,6 +289,9 @@ KeyData::KeyData(TransformList key_origin) {
   key_e.Configure([&](Key& k) {
     k.name = "e";
     k.SetParent(key_d);
+
+    k.AddTransform();
+    k.t().z = 2;
   });
 
   // This key is different from the others in the column. It should be less angled due to the larger
@@ -273,6 +300,10 @@ KeyData::KeyData(TransformList key_origin) {
   key_3.Configure([&](Key& k) {
     k.name = "3";
     k.SetParent(key_e);
+
+    k.AddTransform();
+    k.t().z = 2;
+    k.t().y = .2;
   });
 
   key_c = GetRotatedKey(kDColumnRadius, false);
@@ -292,6 +323,9 @@ KeyData::KeyData(TransformList key_origin) {
   key_w.Configure([&](Key& k) {
     k.name = "w";
     k.SetParent(key_s);
+
+    k.AddTransform();
+    k.t().z = 2;
   });
 
   /*
@@ -327,6 +361,9 @@ KeyData::KeyData(TransformList key_origin) {
   key_r.Configure([&](Key& k) {
     k.name = "r";
     k.SetParent(key_f);
+
+    k.AddTransform();
+    k.t().z = 1.7;
   });
 
   key_4 = GetRotatedKey(kFColumnRadius, true);
@@ -351,6 +388,9 @@ KeyData::KeyData(TransformList key_origin) {
   key_t.Configure([&](Key& k) {
     k.name = "t";
     k.SetParent(key_g);
+
+    k.AddTransform();
+    k.t().z = 1;
   });
 
   key_5 = GetRotatedKey(kGColumnRadius, true);
@@ -368,12 +408,13 @@ KeyData::KeyData(TransformList key_origin) {
   });
 
   // A column
-  //key_q = GetRotatedKey(kAColumnRadius, true);
+  key_q = GetRotatedKey(kAColumnRadius, true);
   key_q.Configure([&](Key& k) {
     k.name = "q";
-    k.SetParent(key_s);
-    k.SetPosition(-18.5, 8, 3);
-    k.t().ry = 10;
+    k.SetParent(key_a);
+
+    k.AddTransform();
+    k.t().z = 1.5;
   });
 
   key_1 = GetRotatedKey(kAColumnRadius, true);
@@ -395,10 +436,12 @@ KeyData::KeyData(TransformList key_origin) {
   });
 
   // Caps column
-  key_tab = GetRotatedKey(kCapsColumnRadius, true);
+  //key_tab = GetRotatedKey(kCapsColumnRadius, true);
   key_tab.Configure([&](Key& k) {
     k.name = "tab";
-    k.SetParent(key_caps);
+    k.SetParent(key_w);
+    k.SetPosition(-18.5 - 2.7, -.4, 3);
+    k.t().ry = 10;
   });
 
   key_plus = GetRotatedKey(kCapsColumnRadius, true);
