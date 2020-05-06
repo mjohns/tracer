@@ -8,37 +8,6 @@
 namespace scad {
 namespace {
 
-// v1 print notes:
-// thumb could be higher.
-// more space for top thumb keys.
-// pinky can be lower. maybe also ring finger down in y direction and z ?
-// thumb rotate z more angled outwards
-// probably should try and incorporeate a dsa 1.5 for middle finger down. maybe a palm down motion?
-// thumb inner could be lower in z, the height is not important for this
-
-// v2 notes:
-// less angling for top thumbs?
-// s down y.
-// more z for top row
-  // caps lock up y a little
-  // q parented off w.
-
-  // v3 notes:
-  // q can go onto pinky column
-  // w neighbor higher and use 1.25
-  // add 3 key
-  // thumb move left?
-  // r a little more ..
-  // thumb and b collision make sure it works .. supports in the way and inverse cap does not play well with extra z or sa type?
-
-  // v4 notes
-  // 3 more z .. maybe flatter ? maybe fine. do i really need this key?
-  // tab is conflicting with q.. needs to be higher in z. probably more y too.
-  // more z for w and q (small)
-  // th3 needs more z.
-
-
-
 constexpr double kDefaultKeySpacing = 19;
 // The direct distance between switch tops in the bowl.
 constexpr double kBowlKeySpacing = 18;
@@ -142,7 +111,7 @@ KeyData::KeyData(TransformList key_origin) {
 
   key_th_top2.Configure([&](Key& k) {
     k.name = "key_th_top2";
-    //k.type = KeyType::SA;
+    // k.type = KeyType::SA;
     k.SetParent(key_th2);
     k.SetPosition(0, 19, 3);
     // k.t().x += -1;
@@ -153,12 +122,12 @@ KeyData::KeyData(TransformList key_origin) {
     k.t().x += 7;
     k.t().z += 2;
     k.t().rx = 10;
-    //k.t().y += -2;
+    // k.t().y += -2;
   });
 
   key_th_top3.Configure([&](Key& k) {
     k.name = "key_th_top3";
-    //k.type = KeyType::SA;
+    // k.type = KeyType::SA;
     k.SetParent(key_th3);
     k.SetPosition(0, 19, 3);
     // k.t().x += -1;
@@ -167,7 +136,7 @@ KeyData::KeyData(TransformList key_origin) {
     // k.t().ry = -18;
     k.t().x += 7;
     k.t().rx = 10;
-   // k.t().y += -2;
+    // k.t().y += -2;
     k.AddTransform();
     k.t().z = 1.5;
   });
@@ -205,7 +174,6 @@ KeyData::KeyData(TransformList key_origin) {
     k.t().rx = 10;
     k.t().y += -1;
   });
-
 
   //
   // Main bowl keys
@@ -444,7 +412,7 @@ KeyData::KeyData(TransformList key_origin) {
   });
 
   // Caps column
-  //key_tab = GetRotatedKey(kCapsColumnRadius, true);
+  // key_tab = GetRotatedKey(kCapsColumnRadius, true);
   key_tab.Configure([&](Key& k) {
     k.name = "tab";
     k.SetParent(key_w);

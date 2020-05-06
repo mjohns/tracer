@@ -428,29 +428,9 @@ int main() {
   Shape result = UnionAll(shapes);
   // Subtracting is expensive to preview and is best to disable while testing.
   result = result.Subtract(UnionAll(negative_shapes));
-  result.WriteToFile("v1_left.scad");
-  result.MirrorX().WriteToFile("v1_right.scad");
+  result.WriteToFile("left.scad");
+  result.MirrorX().WriteToFile("right.scad");
 
-  {
-    double depth = 13;
-    double width = 15;
-    double top_width = width;
-    double mid_width = 6;
-    double mid_height = 5.75;
-    // Height of the bottom plate on the trrs jack.
-    double bottom_plate_height = 2;
-
-    Shape bottom_plate =
-        Cube(width, 2, depth).TranslateY(-1 - bottom_plate_height).TranslateZ(depth / 2);
-    Shape bottom_face = Cube(width, 5, 2).Translate(0, -(5 / 2 + 3), 1);
-    Shape top_face = Cube(top_width, 5, 2).Translate(0, 5 / 2 + mid_height + 1, 1);
-
-    Shape top_plate = Cube(top_width, 2, depth).TranslateY(1 + mid_height).TranslateZ(depth / 2);
-    double back_height = mid_height + 6;
-    Shape back_plate = Cube(top_width, back_height, 2).Translate(0, back_height / 2 - 4, 1 + depth);
-
-    Union(top_face, bottom_plate, bottom_face, top_plate, back_plate).WriteToFile("trrs.scad");
-  }
 
   // Bottom plate
   {
@@ -463,8 +443,8 @@ int main() {
                              .Projection()
                              .LinearExtrude(1.5)
                              .Subtract(UnionAll(screw_holes));
-    bottom_plate.WriteToFile("v1_bottom_left.scad");
-    bottom_plate.MirrorX().WriteToFile("v1_bottom_right.scad");
+    bottom_plate.WriteToFile("bottom_left.scad");
+    bottom_plate.MirrorX().WriteToFile("bottom_right.scad");
   }
 
   return 0;
