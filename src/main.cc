@@ -9,7 +9,7 @@
 
 using namespace scad;
 
-constexpr bool kWriteTestKeys = false;
+constexpr bool kWriteTestKeys = true;
 constexpr bool kIncludeDactylRef = false;
 // Add the caps into the stl for testing.
 constexpr bool kAddCaps = false;
@@ -46,7 +46,7 @@ int main() {
         //   &d.key_d,
     };
     // &d.key_q, &d.key_w, &d.key_f, &d.key_3, &d.key_tab};
-    // test_keys = d.all_keys();
+     test_keys = d.all_keys();
     for (Key* key : test_keys) {
       key->add_side_nub = false;
       key->extra_z = 4;
@@ -61,7 +61,9 @@ int main() {
       test_shapes.push_back(dactyl_manuform.Color("green", .6));
       //  test_shapes.push_back(dactyl_cc.Color("blue", .3));
     }
-    UnionAll(test_shapes).Subtract(d.key_th_top2.GetInverseCap()).WriteToFile("test_keys.scad");
+    UnionAll(test_shapes)
+     // .Subtract(d.key_th_top2.GetInverseCap())
+      .WriteToFile("test_keys.scad");
     return 0;
   }
 

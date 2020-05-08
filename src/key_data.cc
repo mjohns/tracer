@@ -13,8 +13,8 @@ constexpr double kDefaultKeySpacing = 19;
 constexpr double kBowlKeySpacing = 18;
 
 constexpr double kDColumnRadius = 55;
-constexpr double kAColumnRadius = 70;
-constexpr double kSColumnRadius = 65;
+constexpr double kAColumnRadius = 55;
+constexpr double kSColumnRadius = 60;
 constexpr double kGColumnRadius = 65;
 constexpr double kFColumnRadius = 70;
 constexpr double kCapsColumnRadius = 60;
@@ -73,28 +73,19 @@ KeyData::KeyData(TransformList key_origin) {
     k.SetParent(key_origin);
     k.SetPosition(60, -9.18, 42.83);
     k.t().x += -8;
-    k.t().y += 4;
-    k.t().z += 5;
-    k.t().rz = -7;
-    k.t().rx = 15;
-    k.t().ry = 30;
+    k.t().y += 3;
+    k.t().z += 1.5;
 
-    k.t().x += -4;
-    k.t().x += -2;
+    k.t().rx = 14;
+    k.t().ry = 22;
+    k.AddTransform();
+    k.t().rz = -9;
   });
 
   key_th2.Configure([&](Key& k) {
     k.name = "key_th2";
     k.SetParent(key_th1);
-    k.SetPosition(19, -3, 5);
-    k.t().x += -1;
-    // k.t().y += 4;
-    // k.t().rz = -7;
-    // k.t().rx = 15;
-    k.t().ry = -18;
-
-    k.AddTransform();
-    k.t().y += -2;
+    k.SetPosition(19, -1, 2);
   });
 
   key_th3.Configure([&](Key& k) {
@@ -141,6 +132,7 @@ KeyData::KeyData(TransformList key_origin) {
     k.t().z = 1.5;
   });
 
+  /*
   // Start tweaking th1 some more without affecting the children.
   key_th1.Configure([&](Key& k) {
     k.AddTransform();
@@ -174,6 +166,7 @@ KeyData::KeyData(TransformList key_origin) {
     k.t().rx = 10;
     k.t().y += -1;
   });
+  */
 
   //
   // Main bowl keys
@@ -186,8 +179,8 @@ KeyData::KeyData(TransformList key_origin) {
     k.SetParent(key_origin);
     k.SetPosition(26.40, 50.32, 17.87);
     // k.t().ry = -15;
-    k.t().ry = -18;
-    k.t().rx = -7;
+    k.t().ry = -15;
+    //k.t().rx = -7;
   });
 
   key_f.Configure([&](Key& k) {
@@ -227,6 +220,7 @@ KeyData::KeyData(TransformList key_origin) {
     k.SetParent(key_d);
     k.SetPosition(-19.571, -0.090, 5.430);
     k.t().ry = 5;
+
     k.t().y += -2;
   });
 
@@ -240,8 +234,8 @@ KeyData::KeyData(TransformList key_origin) {
     k.SetParent(key_s);
     k.SetPosition(-20.887, -6.170, 5.358);
 
-    k.t().y += -15;
-    k.t().z += -2;
+    k.t().y += -5;
+    //k.t().z += -2;
     k.t().x += -5;
     k.t().rz = 12;
   });
@@ -267,7 +261,7 @@ KeyData::KeyData(TransformList key_origin) {
     k.SetParent(key_d);
 
     k.AddTransform();
-    k.t().z = 2;
+   // k.t().z = 2;
   });
 
   // This key is different from the others in the column. It should be less angled due to the larger
@@ -301,7 +295,7 @@ KeyData::KeyData(TransformList key_origin) {
     k.SetParent(key_s);
 
     k.AddTransform();
-    k.t().z = 2.6;
+  //  k.t().z = 2.6;
   });
 
   /*
@@ -339,7 +333,7 @@ KeyData::KeyData(TransformList key_origin) {
     k.SetParent(key_f);
 
     k.AddTransform();
-    k.t().z = 1.7;
+  //  k.t().z = 1.7;
   });
 
   key_4 = GetRotatedKey(kFColumnRadius, true);
@@ -432,6 +426,16 @@ KeyData::KeyData(TransformList key_origin) {
     k.name = "shift";
     k.SetParent(key_caps);
   });
+
+  key_s.Configure([&](Key& k) {
+    //k.t().y += -1;
+    k.t().rz += 7;
+    k.AddTransform();
+    k.t().x = -2;
+  });
+  // Update parent transforms for 's' column
+  key_w.SetParent(key_s);
+  key_x.SetParent(key_s);
 
   // Keys are measured from the tip of the switch and by default keys are measured from the
   // tip of the cap. Adjust the keys position so that the origin is at the switch top.

@@ -59,16 +59,17 @@ struct KeyData {
   // clang-format off
   KeyGrid grid {{
     { nullptr,   nullptr,      nullptr,    nullptr,          nullptr,         nullptr},
-    { &key_tab,   &key_q,      &key_w,      &key_e,           &key_r,            &key_t},
-    { &key_caps, &key_a,      &key_s,      &key_d,           &key_f,            &key_g},
+    { nullptr,   &key_q,      &key_w,      &key_e,           &key_r,            &key_t},
+    { nullptr, &key_a,      &key_s,      &key_d,           &key_f,            &key_g},
     { nullptr,   &key_z,      &key_x,      &key_c,           &key_v,            &key_b},
     { nullptr,   nullptr,     nullptr,     &key_left_arrow,  nullptr,           nullptr},
   }};
   // clang-format on
 
   std::vector<Key*> thumb_keys() {
-    // return {&key_th1, &key_th2, &key_th3, &key_th_top1, &key_th_top2, &key_th_bottom1};
-    return {&key_th1, &key_th2, &key_th3, &key_th_top2, &key_th_top3};
+    return {&key_th1};
+    //return {&key_th1, &key_th2};
+    //return {&key_th1, &key_th2, &key_th3, &key_th_top2, &key_th_top3};
   }
 
   std::vector<Key*> all_keys() {
