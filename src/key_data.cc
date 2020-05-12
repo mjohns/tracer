@@ -85,19 +85,25 @@ KeyData::KeyData(TransformList key_origin) {
   key_th2.Configure([&](Key& k) {
     k.name = "key_th2";
     k.SetParent(key_th1);
-    k.SetPosition(19, -1, 2);
+    k.SetPosition(19 + 1, -1, 2);
   });
 
   key_th3.Configure([&](Key& k) {
     k.name = "key_th3";
     k.SetParent(key_th2);
-    k.SetPosition(19, -3, 5);
-    k.t().x += -1;
-    k.t().y += -6;
-    // k.t().y += 4;
-    // k.t().rz = -7;
-    // k.t().rx = 15;
-    k.t().ry = -18;
+    k.SetPosition(19, -7, 1);
+    //k.t().ry = -18;
+    k.t().y -= 3;
+  });
+
+
+  key_th_bottom2.Configure([&](Key& k) {
+    k.name = "key_th_bottom_2";
+    k.SetParent(key_th2);
+    //k.SetPosition(-5, -20, -9.5);
+    k.SetPosition(0, -23, -8);
+    k.t().ry = 15;
+    k.t().rx = 5;
   });
 
   key_th_top2.Configure([&](Key& k) {
@@ -110,9 +116,10 @@ KeyData::KeyData(TransformList key_origin) {
     // k.t().rz = -7;
     // k.t().rx = 15;
     // k.t().ry = -18;
-    k.t().x += 7;
+    k.t().x += 6;
     k.t().z += 2;
     k.t().rx = 10;
+    k.t().ry = -10;
     // k.t().y += -2;
   });
 
@@ -125,11 +132,13 @@ KeyData::KeyData(TransformList key_origin) {
     // k.t().y += 4;
     // k.t().rz = -7;
     // k.t().ry = -18;
-    k.t().x += 7;
+    k.t().x += 6.3;
     k.t().rx = 10;
+    k.t().ry = -15;
     // k.t().y += -2;
     k.AddTransform();
-    k.t().z = 1.5;
+    //k.t().z = 2.5;
+    k.t().z = 3.7;
   });
 
   /*
@@ -234,10 +243,10 @@ KeyData::KeyData(TransformList key_origin) {
     k.SetParent(key_s);
     k.SetPosition(-20.887, -6.170, 5.358);
 
-    k.t().y += -5;
+    k.t().y += -6;
+    k.t().ry = 3;
     //k.t().z += -2;
-    k.t().x += -5;
-    k.t().rz = 12;
+    k.t().x += -1;
   });
 
   key_caps.Configure([&](Key& k) {
@@ -427,15 +436,6 @@ KeyData::KeyData(TransformList key_origin) {
     k.SetParent(key_caps);
   });
 
-  key_s.Configure([&](Key& k) {
-    //k.t().y += -1;
-    k.t().rz += 7;
-    k.AddTransform();
-    k.t().x = -2;
-  });
-  // Update parent transforms for 's' column
-  key_w.SetParent(key_s);
-  key_x.SetParent(key_s);
 
   // Keys are measured from the tip of the switch and by default keys are measured from the
   // tip of the cap. Adjust the keys position so that the origin is at the switch top.

@@ -45,9 +45,10 @@ struct KeyData {
   Key key_th1;
   Key key_th2;
   Key key_th3;
-  Key key_th_top1;
   Key key_th_top2;
   Key key_th_top3;
+  Key key_th_bottom1;
+  Key key_th_bottom2;
 
   Key key_backspace;
   Key key_delete;
@@ -67,9 +68,8 @@ struct KeyData {
   // clang-format on
 
   std::vector<Key*> thumb_keys() {
-    return {&key_th1};
-    //return {&key_th1, &key_th2};
-    //return {&key_th1, &key_th2, &key_th3, &key_th_top2, &key_th_top3};
+    return {
+        &key_th1, &key_th2, &key_th3, &key_th_top3, &key_th_top2, &key_th_bottom2};
   }
 
   std::vector<Key*> all_keys() {
