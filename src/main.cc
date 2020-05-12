@@ -259,7 +259,7 @@ int main() {
         {d.key_q.GetBottomLeft(), left},
         {d.key_q.GetTopLeft(), left},
         {d.key_q.GetTopLeft(), up},
-        {d.key_q.GetTopRight(), up},
+        //{d.key_q.GetTopRight(), up},
 
         //{d.key_1.GetTopRight().RotateFront(0, 0, 30), up, 0, 1},
 
