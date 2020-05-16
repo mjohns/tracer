@@ -101,9 +101,10 @@ KeyData::KeyData(TransformList key_origin) {
     k.name = "key_th_bottom_2";
     k.SetParent(key_th2);
     //k.SetPosition(-5, -20, -9.5);
-    k.SetPosition(0, -23, -8);
-    k.t().ry = 15;
-    k.t().rx = 5;
+    //k.SetPosition(0, -23, -8);
+    k.SetPosition(0, -23, -5);
+    k.t().ry = 7;
+    k.t().rx = -5;
   });
 
   key_th_top2.Configure([&](Key& k) {
@@ -369,7 +370,6 @@ KeyData::KeyData(TransformList key_origin) {
     k.SetParent(key_g);
 
     k.AddTransform();
-    k.t().z = 1;
   });
 
   key_5 = GetRotatedKey(kGColumnRadius, true);
@@ -387,13 +387,17 @@ KeyData::KeyData(TransformList key_origin) {
   });
 
   // A column
-  key_q = GetRotatedKey(kAColumnRadius, true);
+  key_q = GetRotatedKey(70, true);
   key_q.Configure([&](Key& k) {
     k.name = "q";
     k.SetParent(key_a);
 
     k.AddTransform();
-    k.t().z = 1.5;
+    k.t().y = 3;
+    k.t().z = -2;
+
+    k.t().y += 1;
+    k.t().z += -2;
   });
 
   key_1 = GetRotatedKey(kAColumnRadius, true);

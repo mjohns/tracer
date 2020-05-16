@@ -54,7 +54,7 @@ Shape RotateCapEdge(Shape s, SaEdgeType edge_type) {
 
 }  // namespace
 
-Shape MakeSwitch(bool add_side_nub) {
+Shape MakeSwitch(bool add_side_nub, bool add_top_nub) {
   std::vector<Shape> shapes;
   Shape top_wall = Cube(kSwitchWidth + kWallWidth * 2, kWallWidth, kSwitchThickness)
                        .Translate(0, kWallWidth / 2 + kSwitchWidth / 2, kSwitchThickness / 2);
@@ -67,10 +67,17 @@ Shape MakeSwitch(bool add_side_nub) {
   if (add_side_nub) {
     Shape side_nub =
         Hull(Cube(kWallWidth, 2.75, kSwitchThickness)
-                 .Translate(kWallWidth / 2 + kSwitchWidth / 2, 0, kSwitchThickness / 2),
+                 .Translate(kWallWidth / 2 + kSwitchWidth / 2 -.1, 0, kSwitchThickness / 2),
              Cylinder(2.75, 1, 30).RotateX(90).Translate(kSwitchWidth / 2, 0, 1));
     shapes.push_back(side_nub);
     shapes.push_back(side_nub.RotateZ(180));
+  }
+  if (add_top_nub) {
+    double height = .9;
+    Shape nub = Cube(3.8, .5, height)
+                    .Translate(0, kSwitchWidth / 2 - .25, kSwitchThickness  - height / 2);
+    shapes.push_back(nub);
+    shapes.push_back(nub.RotateZ(180));
   }
 
   return UnionAll(shapes).TranslateZ(kSwitchThickness * -1);
@@ -183,13 +190,13 @@ Shape Key::GetInverseCap(double custom_vertical_length) const {
 Shape Key::GetSwitch() const {
   std::vector<Shape> shapes;
   if (extra_z > 0) {
-    Shape s = Union(MakeSwitch(false), MakeSwitch(add_side_nub).TranslateZ(extra_z));
+    Shape s = Union(MakeSwitch(false), MakeSwitch(add_side_nub, add_top_nub).TranslateZ(extra_z));
     if (extra_z > 4) {
       s += MakeSwitch(false).TranslateZ(4);
     }
     shapes.push_back(GetSwitchTransforms().Apply(s));
   } else {
-    shapes.push_back(GetSwitchTransforms().Apply(MakeSwitch(add_side_nub)));
+    shapes.push_back(GetSwitchTransforms().Apply(MakeSwitch(add_side_nub, add_top_nub)));
   }
   if (extra_width_top > 0) {
     shapes.push_back(Hull(GetTopRight().Apply(GetPostConnector()),
