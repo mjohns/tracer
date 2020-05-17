@@ -12,12 +12,20 @@ constexpr double kDefaultKeySpacing = 19;
 // The direct distance between switch tops in the bowl.
 constexpr double kBowlKeySpacing = 18;
 
+/*
 constexpr double kDColumnRadius = 55;
 constexpr double kAColumnRadius = 55;
 constexpr double kSColumnRadius = 60;
 constexpr double kGColumnRadius = 65;
 constexpr double kFColumnRadius = 70;
 constexpr double kCapsColumnRadius = 60;
+*/
+constexpr double kDColumnRadius = 70;
+constexpr double kAColumnRadius = 70;
+constexpr double kSColumnRadius = 70;
+constexpr double kGColumnRadius = 70;
+constexpr double kFColumnRadius = 70;
+constexpr double kCapsColumnRadius = 70;
 
 // Rotates a key about the x axis until it has traveled the direct distance (not on the arc).
 Key GetRotatedKey(double radius, bool up) {
@@ -61,6 +69,14 @@ Key GetRotatedKey(double radius, bool up) {
   }
 }
 
+Key GetRotatedKeyUp(double radius) {
+  return GetRotatedKey(radius, true);
+}
+
+Key GetRotatedKeyDown(double radius) {
+  return GetRotatedKey(radius, false);
+}
+
 }  // namespace
 
 KeyData::KeyData(TransformList key_origin) {
@@ -99,12 +115,11 @@ KeyData::KeyData(TransformList key_origin) {
 
   key_th_bottom2.Configure([&](Key& k) {
     k.name = "key_th_bottom_2";
-    k.SetParent(key_th2);
+    k.SetParent(key_th3);
     //k.SetPosition(-5, -20, -9.5);
     //k.SetPosition(0, -23, -8);
-    k.SetPosition(0, -23, -5);
-    k.t().ry = 7;
-    k.t().rx = -5;
+    k.SetPosition(-15, -17, -2);
+    k.t().rz = -35;
   });
 
   key_th_top2.Configure([&](Key& k) {
@@ -142,41 +157,6 @@ KeyData::KeyData(TransformList key_origin) {
     k.t().z = 3.7;
   });
 
-  /*
-  // Start tweaking th1 some more without affecting the children.
-  key_th1.Configure([&](Key& k) {
-    k.AddTransform();
-    k.t().y += -12;
-    // k.t().rz = -7;
-    k.t().rx = -15;
-    k.t().rz = -10;
-    k.t().ry = 5;
-
-    k.AddTransform();
-    k.t().z += 3;
-    k.t().x += -1.5;
-
-    // This will move it down in absolute z coords.
-    auto& p_t = k.parent_transforms.AddTransform();
-    p_t.z = -5.2;
-  });
-
-  key_th_top1.Configure([&](Key& k) {
-    k.name = "key_th_top1";
-    k.type = KeyType::SA;
-    k.SetParent(key_th1);
-    k.SetPosition(0, 19, 0);
-    // k.t().x += -1;
-    // k.t().y += 4;
-    // k.t().rz = -7;
-    // k.t().rx = 15;
-    // k.t().ry = -18;
-    // k.t().x += 5;
-    k.t().z += 4;
-    k.t().rx = 10;
-    k.t().y += -1;
-  });
-  */
 
   //
   // Main bowl keys
@@ -188,9 +168,10 @@ KeyData::KeyData(TransformList key_origin) {
     k.name = "d";
     k.SetParent(key_origin);
     k.SetPosition(26.40, 50.32, 17.87);
-    // k.t().ry = -15;
     k.t().ry = -15;
-    //k.t().rx = -7;
+    k.t().z += 5;
+    k.t().x += -1;
+    k.t().y += .5;
   });
 
   key_f.Configure([&](Key& k) {
@@ -203,21 +184,19 @@ KeyData::KeyData(TransformList key_origin) {
     k.SetParent(key_d);
     k.SetPosition(19.938, -0.950, 5.249);
     k.t().ry = -5;
+    k.t().y += -2;
   });
 
   key_g.Configure([&](Key& k) {
     k.name = "g";
 
-    // Absolute:
-    // k.SetPosition(60.16, 48.06, 37.39);
-    // k.t().ry = -30;
-
     k.SetParent(key_f);
     k.SetPosition(18.65, -1.310, 3.305);
-    k.t().ry = -10;
+    k.t().ry = -5;
 
-    // ADJUSTMENT
-    // k.t().x += -.4;
+    k.t().z += -2.3;
+    k.t().x += 1;
+    k.t().y += 1.5;
   });
 
   key_s.Configure([&](Key& k) {
@@ -231,7 +210,8 @@ KeyData::KeyData(TransformList key_origin) {
     k.SetPosition(-19.571, -0.090, 5.430);
     k.t().ry = 5;
 
-    k.t().y += -2;
+    k.t().y += -2.5;
+    k.t().z += -.5;
   });
 
   key_a.Configure([&](Key& k) {
@@ -247,7 +227,7 @@ KeyData::KeyData(TransformList key_origin) {
     k.t().y += -6;
     k.t().ry = 3;
     //k.t().z += -2;
-    k.t().x += -1;
+    k.t().x += 0;
   });
 
   key_caps.Configure([&](Key& k) {
@@ -276,14 +256,13 @@ KeyData::KeyData(TransformList key_origin) {
 
   // This key is different from the others in the column. It should be less angled due to the larger
   // radius.
-  key_3 = GetRotatedKey(kDColumnRadius + 15, true);
+  key_3 = GetRotatedKey(kDColumnRadius, true);
   key_3.Configure([&](Key& k) {
     k.name = "3";
     k.SetParent(key_e);
 
     k.AddTransform();
-    k.t().z = 2;
-    k.t().y = .2;
+    k.t().z = 1;
   });
 
   key_c = GetRotatedKey(kDColumnRadius, false);
@@ -322,6 +301,9 @@ KeyData::KeyData(TransformList key_origin) {
   key_2.Configure([&](Key& k) {
     k.name = "2";
     k.SetParent(key_w);
+
+    k.AddTransform();
+    k.t().z = 1;
   });
 
   key_x = GetRotatedKey(kSColumnRadius, false);
@@ -350,6 +332,9 @@ KeyData::KeyData(TransformList key_origin) {
   key_4.Configure([&](Key& k) {
     k.name = "4";
     k.SetParent(key_r);
+
+    k.AddTransform();
+    k.t().z = 1;
   });
 
   key_v = GetRotatedKey(kFColumnRadius, false);
@@ -440,15 +425,6 @@ KeyData::KeyData(TransformList key_origin) {
     k.SetParent(key_caps);
   });
 
-
-  // Keys are measured from the tip of the switch and by default keys are measured from the
-  // tip of the cap. Adjust the keys position so that the origin is at the switch top.
-  double switch_top_z_offset = 10;
-  for (Key* key : grid.keys()) {
-    key->AddTransform();
-    key->disable_switch_z_offset = true;
-    key->t().z -= 10;
-  }
 }
 
 }  // namespace scad

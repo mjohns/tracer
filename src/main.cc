@@ -10,7 +10,7 @@
 using namespace scad;
 
 constexpr bool kWriteTestKeys = false;
-constexpr bool kIncludeDactylRef = false;
+constexpr bool kIncludeDactylRef = true;
 // Add the caps into the stl for testing.
 constexpr bool kAddCaps = false;
 
@@ -56,13 +56,10 @@ int main() {
         &d.key_th_bottom2,
         //   &d.key_d,
     };
-    Key k;
-
-    test_keys = {&k};
-    // test_keys = d.all_keys();
+    test_keys = d.all_keys();
     for (Key* key : test_keys) {
-      key->add_side_nub = false;
-      // key->add_top_nub = true;
+      key->add_side_nub = true;
+      key->add_top_nub = true;
       key->extra_z = 4;
       test_shapes.push_back(key->GetSwitch());
       if (kAddCaps) {
@@ -89,8 +86,8 @@ int main() {
   d.key_th_top3.extra_width_top = 4;
   d.key_th3.extra_width_right = 2;
   d.key_v.extra_width_bottom = 4;
-  d.key_e.extra_width_top = 5;
-  d.key_r.extra_width_top = 3;
+  d.key_e.extra_width_top = 2;
+  d.key_r.extra_width_top = 2;
   d.key_b.extra_z = 1;
 
   d.key_q.extra_width_left = 3;
@@ -180,16 +177,6 @@ int main() {
                               d.key_b.GetTopRight(),
                               d.key_g.GetBottomRight(),
                           }));
-  /*
-    shapes.push_back(TriFan(d.key_th2.GetTopLeft(),
-                            {
-                                d.key_th1.GetTopRight(),
-                                d.key_b.GetBottomLeft(),
-                                // d.key_b.GetBottomRight(),
-                                d.key_th_top2.GetTopLeft(),
-                                d.key_th_top2.GetBottomLeft(),
-                            }));
-                            */
   shapes.push_back(TriFan(d.key_b.GetBottomRight(),
                           {
                               d.key_th_top2.GetTopLeft(),
@@ -201,31 +188,6 @@ int main() {
                               d.key_b.GetBottomRight(),
                               d.key_b.GetBottomLeft(),
                               d.key_th1.GetTopRight(),
-                          }));
-
-  shapes.push_back(TriFan(d.key_th_bottom2.GetBottomRight(),
-                          {
-                              d.key_th3.GetBottomRight(),
-                              d.key_th3.GetBottomLeft(),
-                              d.key_th_bottom2.GetTopRight(),
-                          }));
-  shapes.push_back(TriFan(d.key_th_bottom2.GetTopRight(),
-                          {
-                              d.key_th3.GetBottomLeft(),
-                              d.key_th2.GetBottomRight(),
-                              d.key_th2.GetBottomLeft(),
-                          }));
-  shapes.push_back(TriFan(d.key_th1.GetBottomRight(),
-                          {
-                              d.key_th2.GetBottomLeft(),
-                              d.key_th_bottom2.GetTopRight(),
-                              d.key_th_bottom2.GetTopLeft(),
-                              d.key_th1.GetBottomLeft(),
-                          }));
-  shapes.push_back(TriFan(d.key_th_bottom2.GetTopLeft(),
-                          {
-                              d.key_th_bottom2.GetBottomLeft(),
-                              d.key_th1.GetBottomLeft(),
                           }));
 
   shapes.push_back(TriMesh({
@@ -279,17 +241,18 @@ int main() {
 
     std::vector<WallPoint> wall_points = {
 
-        {d.key_w.GetTopLeft(), up},
+        //{d.key_w.GetTopLeft(), up},
         //        {d.key_w.GetTopRight(), up},
 
-        {d.key_e.GetTopLeft(), up},
-        {d.key_e.GetTopRight(), up},
+         {d.key_2.GetTopLeft(), up},
 
-        //      {d.key_r.GetTopLeft(), up},
-        {d.key_r.GetTopRight(), up},
+        {d.key_3.GetTopLeft(), up},
+        {d.key_3.GetTopRight(), up},
+
+        {d.key_4.GetTopRight(), up},
 
         //       {d.key_t.GetTopLeft(), up},
-        {d.key_t.GetTopRight(), up},
+        {d.key_t.GetTopRight(), up, 1},
         {d.key_t.GetTopRight(), right},
         {d.key_t.GetBottomRight(), right},
 
@@ -305,8 +268,8 @@ int main() {
         {d.key_th_top3.GetBottomRight(), right},
 
         {d.key_th3.GetBottomRight(), right},
-        {d.key_th3.GetBottomRight(), down},
 
+        {d.key_th_bottom2.GetBottomRight(), right},
         {d.key_th_bottom2.GetBottomRight(), down},
         {d.key_th_bottom2.GetBottomLeft(), down},
 
@@ -323,7 +286,7 @@ int main() {
 
         {d.key_q.GetBottomLeft(), left},
         {d.key_q.GetTopLeft(), left},
-        {d.key_q.GetTopLeft(), up},
+        {d.key_q.GetTopLeft(), up, 1, 0},
         //{d.key_q.GetTopRight(), up},
 
         //{d.key_1.GetTopRight().RotateFront(0, 0, 30), up, 0, 1},
@@ -414,10 +377,10 @@ int main() {
     screw_right_top.x -= 0;
     screw_right_top.y += -.5;
 
-    glm::vec3 screw_right_bottom = d.key_th_bottom2.GetBottomLeft().Apply(kOrigin);
+    glm::vec3 screw_right_bottom = d.key_th_bottom2.GetBottomRight().Apply(kOrigin);
     screw_right_bottom.z = 0;
-    screw_right_bottom.y += 3;
-    screw_right_bottom.x += .5;
+    screw_right_bottom.y += 4.5;
+    screw_right_bottom.x += -1;
 
     glm::vec3 screw_right_mid = d.key_th_top3.GetTopRight().Apply(kOrigin);
     screw_right_mid.z = 0;

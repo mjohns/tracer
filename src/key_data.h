@@ -59,10 +59,10 @@ struct KeyData {
 
   // clang-format off
   KeyGrid grid {{
-    { nullptr,   nullptr,      nullptr,    nullptr,          nullptr,         nullptr},
-    { nullptr,   &key_q,      &key_w,      &key_e,           &key_r,            &key_t},
-    { nullptr, &key_a,      &key_s,      &key_d,           &key_f,            &key_g},
-    { nullptr,   &key_z,      &key_x,      &key_c,           &key_v,            &key_b},
+    { nullptr,   nullptr,     &key_2,      &key_3,          &key_4,         nullptr},
+    { nullptr,   &key_q,      &key_w,      &key_e,          &key_r,            &key_t},
+    { nullptr,   &key_a,      &key_s,      &key_d,          &key_f,            &key_g},
+    { nullptr,   &key_z,      &key_x,      &key_c,          &key_v,            &key_b},
     { nullptr,   nullptr,     nullptr,     &key_left_arrow,  nullptr,           nullptr},
   }};
   // clang-format on
