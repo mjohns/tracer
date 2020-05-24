@@ -67,7 +67,7 @@ Shape MakeSwitch(bool add_side_nub, bool add_top_nub) {
   if (add_side_nub) {
     Shape side_nub =
         Hull(Cube(kWallWidth, 2.75, kSwitchThickness)
-                 .Translate(kWallWidth / 2 + kSwitchWidth / 2 -.1, 0, kSwitchThickness / 2),
+                 .Translate(kWallWidth / 2 + kSwitchWidth / 2 -.2, 0, kSwitchThickness / 2),
              Cylinder(2.75, 1, 30).RotateX(90).Translate(kSwitchWidth / 2, 0, 1));
     shapes.push_back(side_nub);
     shapes.push_back(side_nub.RotateZ(180));
@@ -318,8 +318,8 @@ std::vector<TransformList> Key::GetCorners(double offset) const {
   return {GetTopLeft(offset), GetTopRight(offset), GetBottomRight(offset), GetBottomLeft(offset)};
 }
 
-Shape GetPostConnector() {
-  return Cube(.01, .01, 3.5).TranslateZ(3.5 / -2.0);
+Shape GetPostConnector(double width) {
+  return Cube(width, width, 3.5).TranslateZ(3.5 / -2.0);
 }
 
 Shape ConnectVertical(const Key& top, const Key& bottom, Shape connector, double offset) {

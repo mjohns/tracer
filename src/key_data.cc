@@ -102,14 +102,15 @@ KeyData::KeyData(TransformList key_origin) {
     k.name = "key_th2";
     k.SetParent(key_th1);
     k.SetPosition(19 + 1, -1, 2);
+    k.t().y += 4;
   });
 
   key_th3.Configure([&](Key& k) {
     k.name = "key_th3";
     k.SetParent(key_th2);
-    k.SetPosition(19, -7, 1);
+    k.SetPosition(19 + 1, -7, 1);
     //k.t().ry = -18;
-    k.t().y -= 3;
+    k.t().y += 1;
   });
 
 
@@ -118,8 +119,13 @@ KeyData::KeyData(TransformList key_origin) {
     k.SetParent(key_th3);
     //k.SetPosition(-5, -20, -9.5);
     //k.SetPosition(0, -23, -8);
-    k.SetPosition(-15, -17, -2);
-    k.t().rz = -35;
+    k.SetPosition(-15, -17, -4);
+    k.t().rz = -33;
+
+    k.AddTransform();
+    k.t().ry = 8;
+    k.t().x = 4;
+    k.t().z = -1;
   });
 
   key_th_top2.Configure([&](Key& k) {
@@ -143,18 +149,8 @@ KeyData::KeyData(TransformList key_origin) {
     k.name = "key_th_top3";
     // k.type = KeyType::SA;
     k.SetParent(key_th3);
-    k.SetPosition(0, 19, 3);
-    // k.t().x += -1;
-    // k.t().y += 4;
-    // k.t().rz = -7;
-    // k.t().ry = -18;
-    k.t().x += 6.3;
-    k.t().rx = 10;
-    k.t().ry = -15;
-    // k.t().y += -2;
-    k.AddTransform();
-    //k.t().z = 2.5;
-    k.t().z = 3.7;
+    k.SetPosition(0, 19, 2.7);
+    k.t().y += 1;
   });
 
 

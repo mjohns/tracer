@@ -180,7 +180,7 @@ struct KeyGrid {
 // Used to connect key corners together. It is thin so it can have width issues when the two
 // connectors being hulled don't have a large projection on one another. (keys close together with
 // vertical separation)
-Shape GetPostConnector();
+Shape GetPostConnector(double width = .01);
 
 Shape ConnectVertical(const Key& top,
                       const Key& bottom,

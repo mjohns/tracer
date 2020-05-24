@@ -10,7 +10,7 @@
 using namespace scad;
 
 constexpr bool kWriteTestKeys = false;
-constexpr bool kIncludeDactylRef = true;
+constexpr bool kIncludeDactylRef = false;
 // Add the caps into the stl for testing.
 constexpr bool kAddCaps = false;
 
@@ -52,15 +52,15 @@ int main() {
         &d.key_th2,
         &d.key_th3,
         //&d.key_th_top2,
-        //&d.key_th_top3,
+        &d.key_th_top3,
         &d.key_th_bottom2,
         //   &d.key_d,
     };
-    test_keys = d.all_keys();
+    // test_keys = d.all_keys();
     for (Key* key : test_keys) {
-      key->add_side_nub = true;
-      key->add_top_nub = true;
-      key->extra_z = 4;
+      key->add_side_nub = false;
+      key->add_top_nub = false;
+      key->extra_z = 2;
       test_shapes.push_back(key->GetSwitch());
       if (kAddCaps) {
         test_shapes.push_back(key->GetCap().Color("red"));
@@ -83,12 +83,13 @@ int main() {
   // d.key_b.extra_width_bottom = 3;
   // d.key_th1.extra_width_top = 2;
   // d.key_th1.extra_width_left = 2;
-  d.key_th_top3.extra_width_top = 4;
+  d.key_th_top3.extra_width_top = 2;
   d.key_th3.extra_width_right = 2;
+  d.key_th_top3.extra_width_right = 1;
+  d.key_th2.extra_width_top = 2;
   d.key_v.extra_width_bottom = 4;
-  d.key_e.extra_width_top = 2;
+  d.key_e.extra_width_top = 2.5;
   d.key_r.extra_width_top = 2;
-  d.key_b.extra_z = 1;
 
   d.key_q.extra_width_left = 3;
   d.key_a.extra_width_left = 3;
@@ -108,26 +109,39 @@ int main() {
   shapes.push_back(Union(ConnectVertical(d.key_q, d.key_a),
                          ConnectVertical(d.key_a, d.key_z),
                          ConnectHorizontal(d.key_th2, d.key_th3),
-                         ConnectHorizontal(d.key_th1, d.key_th2),
-                         ConnectHorizontal(d.key_th_top2, d.key_th_top3),
-                         // ConnectVertical(d.key_th_top2, d.key_th2),
-                         // ConnectVertical(d.key_th_top3, d.key_th3),
-                         ConnectDiagonal(d.key_th_top2, d.key_th_top3, d.key_th3, d.key_th2)));
+                         ConnectHorizontal(d.key_th1, d.key_th2)));
 
-  shapes.push_back(TriFan(d.key_x.GetBottomRight(),
+  shapes.push_back(TriFan(d.key_z.GetBottomRight(),
                           {
-                              d.key_c.GetBottomLeft(),
-                              d.key_left_arrow.GetTopLeft(),
-                              d.key_left_arrow.GetBottomLeft(),
-                              d.key_z.GetBottomRight(),
+                              d.key_z.GetBottomLeft(),
+                              d.key_slash.GetBottomLeft(),
+                              d.key_slash.GetTopLeft(),
                               d.key_x.GetBottomLeft(),
                           }));
-  shapes.push_back(TriFan(d.key_left_arrow.GetBottomRight(),
-                          {
-                              d.key_th1.GetTopLeft(),
-                              d.key_th1.GetBottomLeft(),
-                              d.key_left_arrow.GetBottomLeft(),
-                          }));
+  /*
+    shapes.push_back(TriFan(d.key_th1.GetBottomLeft(),
+                            {
+                                d.key_slash.GetBottomRight(),
+                                d.key_left_arrow.GetBottomLeft(),
+                            }));
+    shapes.push_back(TriFan(d.key_left_arrow.GetBottomRight(),
+                            {
+                                d.key_th1.GetTopLeft(),
+                                d.key_th1.GetBottomLeft(),
+                                d.key_left_arrow.GetBottomLeft(),
+                            }));
+                            */
+  shapes.push_back(TriMesh({
+      d.key_th1.GetBottomLeft(),
+      d.key_slash.GetBottomRight(),
+      d.key_left_arrow.GetBottomRight(),
+      d.key_left_arrow.GetBottomLeft(),
+  }));
+  shapes.push_back(TriMesh({
+      d.key_th1.GetBottomLeft(),
+      d.key_th1.GetTopLeft(),
+      d.key_left_arrow.GetBottomRight(),
+  }));
 
   shapes.push_back(TriFan(d.key_v.GetBottomLeft(),
                           {
@@ -148,47 +162,65 @@ int main() {
                               d.key_th1.GetTopLeft(),
                           }));
 
-  shapes.push_back(TriFan(d.key_th_top2.GetBottomLeft(),
+  shapes.push_back(TriFan(d.key_th_top3.GetBottomLeft().Apply(GetPostConnector()),
                           {
-                              d.key_th2.GetTopLeft(),
-                              d.key_th2.GetTopRight(),
-                              d.key_th_top2.GetBottomRight(),
-                          }));
-  shapes.push_back(TriFan(d.key_th_top3.GetBottomLeft(),
-                          {
-                              d.key_th3.GetTopLeft(),
-                              d.key_th3.GetTopRight(),
-                              d.key_th_top3.GetBottomRight(),
+                              d.key_th3.GetTopLeft().Apply(GetPostConnector()),
+                              d.key_th3.GetTopRight().Apply(GetPostConnector()),
+                              d.key_th_top3.GetBottomRight().Apply(GetPostConnector()),
                           }));
 
-  shapes.push_back(TriFan(d.key_th3.GetTopRight(),
-                          {
-                              d.key_th_top3.GetBottomRight(),
-                              d.key_th3.GetBottomRight(),
-                          }));
-  shapes.push_back(TriFan(d.key_th_top2.GetTopRight(),
-                          {
-                              d.key_th_top3.GetTopLeft(),
-                              d.key_th_top3.GetTopRight(),
-                          }));
-  shapes.push_back(TriFan(d.key_th_top2.GetTopRight(),
-                          {
-                              d.key_th_top2.GetTopLeft(),
-                              d.key_b.GetTopRight(),
-                              d.key_g.GetBottomRight(),
-                          }));
+  shapes.push_back(TriMesh({
+      d.key_th_top3.GetTopRight(),
+      d.key_th_top3.GetTopLeft(),
+      d.key_g.GetBottomRight(),
+  }));
+  shapes.push_back(TriMesh({
+      d.key_th_top3.GetTopLeft(-1).Apply(GetPostConnector(2)),
+      d.key_th_top3.GetBottomLeft(-1).Apply(GetPostConnector(2)),
+      d.key_th2.GetTopRight().Apply(GetPostConnector()),
+      d.key_th3.GetTopLeft().Apply(GetPostConnector()),
+  }));
   shapes.push_back(TriFan(d.key_b.GetBottomRight(),
                           {
-                              d.key_th_top2.GetTopLeft(),
-                              d.key_th_top2.GetBottomLeft(),
+                              d.key_b.GetTopRight(),
+                              d.key_g.GetBottomRight(),
+                              d.key_th_top3.GetTopLeft(),
+                              d.key_th2.GetTopRight(),
+                              d.key_th2.GetTopLeft(),
                           }));
   shapes.push_back(TriFan(d.key_th2.GetTopLeft(),
                           {
-                              d.key_th_top2.GetBottomLeft(),
-                              d.key_b.GetBottomRight(),
-                              d.key_b.GetBottomLeft(),
                               d.key_th1.GetTopRight(),
+                              d.key_b.GetBottomLeft(),
+                              d.key_b.GetBottomRight(),
                           }));
+
+  shapes.push_back(TriFan(d.key_th_bottom2.GetTopRight(),
+                          {
+                              d.key_th_bottom2.GetBottomRight(),
+                              d.key_th3.GetBottomRight(),
+                              d.key_th3.GetBottomLeft(),
+                          }));
+  shapes.push_back(TriFan(d.key_th_bottom2.GetTopLeft(),
+                          {
+                              d.key_th3.GetBottomLeft(),
+                              d.key_th2.GetBottomRight(),
+                              d.key_th2.GetBottomLeft(),
+                          }));
+  shapes.push_back(TriFan(d.key_th_bottom2.GetBottomLeft(),
+                          {
+                              d.key_th1.GetBottomLeft(),
+                              d.key_th1.GetBottomRight(),
+                          }));
+  shapes.push_back(TriFan(d.key_th1.GetBottomRight(),
+                          {
+                              d.key_th_bottom2.GetBottomLeft(),
+                              d.key_th_bottom2.GetTopLeft(),
+                              d.key_th2.GetBottomLeft(),
+                          }));
+  shapes.push_back(Tri(d.key_th_bottom2.GetTopLeft().Apply(GetPostConnector()),
+                       d.key_th_bottom2.GetTopRight().Apply(GetPostConnector()),
+                       d.key_th3.GetBottomLeft(-1).Apply(GetPostConnector(2))));
 
   shapes.push_back(TriMesh({
       d.key_q.GetTopLeft(),
@@ -244,15 +276,15 @@ int main() {
         //{d.key_w.GetTopLeft(), up},
         //        {d.key_w.GetTopRight(), up},
 
-         {d.key_2.GetTopLeft(), up},
+        {d.key_w.GetTopLeft(), up, 1},
 
-        {d.key_3.GetTopLeft(), up},
-        {d.key_3.GetTopRight(), up},
+        {d.key_e.GetTopLeft(), up},
+        {d.key_e.GetTopRight(), up},
 
-        {d.key_4.GetTopRight(), up},
+        {d.key_r.GetTopRight(), up, 1.5},
 
         //       {d.key_t.GetTopLeft(), up},
-        {d.key_t.GetTopRight(), up, 1},
+        {d.key_t.GetTopRight(), up},
         {d.key_t.GetTopRight(), right},
         {d.key_t.GetBottomRight(), right},
 
@@ -261,12 +293,13 @@ int main() {
 
         //{d.key_b.GetTopRight(), right},
 
-        {d.key_th_top2.GetTopRight().RotateFront(0, 0, -20), up, 0, 0},
+        //{d.key_th_top2.GetTopRight().RotateFront(0, 0, -20), up, 0, 0},
 
         {d.key_th_top3.GetTopRight(), up},
         {d.key_th_top3.GetTopRight(), right},
         {d.key_th_top3.GetBottomRight(), right},
 
+        {d.key_th3.GetTopRight(), right},
         {d.key_th3.GetBottomRight(), right},
 
         {d.key_th_bottom2.GetBottomRight(), right},
@@ -275,9 +308,10 @@ int main() {
 
         {d.key_th1.GetBottomLeft(), down},
 
-        {d.key_left_arrow.GetBottomLeft().RotateFront(0, 0, -20), down, 0, 1},
+        //{d.key_left_arrow.GetBottomLeft().RotateFront(0, 0, -20), down, 0, 1},
+        {d.key_slash.GetBottomRight(), down},
+        {d.key_slash.GetBottomLeft(), down},
 
-        {d.key_z.GetBottomRight(), down},
         {d.key_z.GetBottomLeft(), down},
         {d.key_z.GetBottomLeft(), left},
 
@@ -356,6 +390,7 @@ int main() {
 
   // Add all the screw inserts.
   std::vector<Shape> screw_holes;
+  std::vector<Shape> screw_pegs;
   {
     double screw_height = 5;
     double screw_radius = 4.4 / 2.0;
@@ -374,18 +409,18 @@ int main() {
 
     glm::vec3 screw_right_top = d.key_t.GetTopRight().Apply(kOrigin);
     screw_right_top.z = 0;
-    screw_right_top.x -= 0;
-    screw_right_top.y += -.5;
+    screw_right_top.x -= 1.5;
+    screw_right_top.y += -.8;
 
     glm::vec3 screw_right_bottom = d.key_th_bottom2.GetBottomRight().Apply(kOrigin);
     screw_right_bottom.z = 0;
-    screw_right_bottom.y += 4.5;
-    screw_right_bottom.x += -1;
+    screw_right_bottom.y += 5.7;
+    screw_right_bottom.x += -1.9;
 
     glm::vec3 screw_right_mid = d.key_th_top3.GetTopRight().Apply(kOrigin);
     screw_right_mid.z = 0;
     screw_right_mid.y += 0;
-    screw_right_mid.x += -3.5;
+    screw_right_mid.x += -4.9;
 
     shapes.push_back(Union(screw_insert.Translate(screw_left_top),
                            screw_insert.Translate(screw_right_top),
@@ -399,6 +434,14 @@ int main() {
         screw_hole.Translate(screw_right_mid),
         screw_hole.Translate(screw_right_bottom),
         screw_hole.Translate(screw_left_bottom),
+    };
+    Shape peg = Cylinder(5, screw_radius - .4, 30).TranslateZ(2.5);
+    screw_pegs = {
+        peg.Translate(screw_left_top),
+        peg.Translate(screw_right_top),
+        peg.Translate(screw_right_mid),
+        peg.Translate(screw_right_bottom),
+        peg.Translate(screw_left_bottom),
     };
   }
 
@@ -424,18 +467,33 @@ int main() {
   negative_shapes.push_back(trrs_hole.Translate(trrs_hole_location));
 
   {
-    glm::vec3 usb_location = d.key_e.GetTopLeft().Apply({10, 0, 0});
-    usb_location.z = 6;
-    usb_location.y += 4;
-    Shape c = Cylinder(8, 2.5, 30).RotateX(90).Translate(usb_location);
-    negative_shapes.push_back(Hull(c, c.Projection().LinearExtrude(.1)));
+    Shape bottom = Cube(3, 1.5, 4).TranslateZ(3).TranslateY((-5.1 / 2) + (-1.5 / 2));
+    Shape c = Cylinder(2.5, 4.9, 30).TranslateZ(2.5 / 2);
+    Shape cut = Cube(6.1, 5.1, 8);
+    Union(bottom, c).Subtract(cut).WriteToFile("trrs.scad");
   }
 
   Shape result = UnionAll(shapes);
   // Subtracting is expensive to preview and is best to disable while testing.
   result = result.Subtract(UnionAll(negative_shapes));
   result.WriteToFile("left.scad");
-  result.MirrorX().WriteToFile("right.scad");
+
+  {
+    glm::vec3 usb_location = d.key_e.GetTopLeft().Apply({10, 0, 0});
+    usb_location.z = 6;
+    usb_location.y += 4;
+    Shape c = Cylinder(8, 2.5, 30).RotateX(90).Translate(usb_location);
+    Shape usb_hole = Hull(c, c.Projection().LinearExtrude(.1));
+    result.Subtract(usb_hole).MirrorX().WriteToFile("right.scad");
+
+    double thick = 3.6;
+    Shape front = Cube(4.8, thick, 7).TranslateZ(7/2);
+    Shape back = Cube(8, 2, 7).TranslateZ(7/2).TranslateY(thick/2 + .5);
+  
+    Shape c2 = Cylinder(8, 2.5, 30).RotateX(90).TranslateZ(6);
+    Union(front, back).Subtract(c2).WriteToFile("usb_holder.scad");
+  }
+
 
   // Bottom plate
   {
@@ -444,12 +502,16 @@ int main() {
       bottom_plate_shapes.push_back(Hull(key->GetSwitch()));
     }
 
-    Shape bottom_plate = UnionAll(bottom_plate_shapes)
-                             .Projection()
-                             .LinearExtrude(1.5)
-                             .Subtract(UnionAll(screw_holes));
-    bottom_plate.WriteToFile("bottom_left.scad");
-    bottom_plate.MirrorX().WriteToFile("bottom_right.scad");
+    Shape bottom_plate =
+        UnionAll(bottom_plate_shapes).Projection().LinearExtrude(1.5).TranslateZ(1.5 / 2);
+
+    Shape bottom_plate_screws = bottom_plate.Subtract(UnionAll(screw_holes));
+    bottom_plate_screws.WriteToFile("bottom_left.scad");
+    bottom_plate_screws.MirrorX().WriteToFile("bottom_right.scad");
+
+    bottom_plate = bottom_plate + UnionAll(screw_pegs);
+    bottom_plate.WriteToFile("bottom_v2_left.scad");
+    bottom_plate.MirrorX().WriteToFile("bottom_v2_right.scad");
   }
 
   return 0;
