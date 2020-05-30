@@ -467,9 +467,10 @@ int main() {
   negative_shapes.push_back(trrs_hole.Translate(trrs_hole_location));
 
   {
-    Shape bottom = Cube(3, 1.5, 4).TranslateZ(3).TranslateY((-5.1 / 2) + (-1.5 / 2));
-    Shape c = Cylinder(2.5, 4.9, 30).TranslateZ(2.5 / 2);
-    Shape cut = Cube(6.1, 5.1, 8);
+
+    Shape bottom = Cube(5, 1.5, 8).TranslateZ(8/2).TranslateY((-5.3 / 2) + (-1.5 / 2));
+    Shape c = Cylinder(2.5, 8, 30).TranslateZ(2.5 / 2);
+    Shape cut = Cube(6.3, 5.3, 8);
     Union(bottom, c).Subtract(cut).WriteToFile("trrs.scad");
   }
 
@@ -486,9 +487,9 @@ int main() {
     Shape usb_hole = Hull(c, c.Projection().LinearExtrude(.1));
     result.Subtract(usb_hole).MirrorX().WriteToFile("right.scad");
 
-    double thick = 3.6;
+    double thick = 3.8;
     Shape front = Cube(4.8, thick, 7).TranslateZ(7/2);
-    Shape back = Cube(8, 2, 7).TranslateZ(7/2).TranslateY(thick/2 + .5);
+    Shape back = Cube(8, 2, 7.5).TranslateZ(7.5/2).TranslateY(thick/2 + .5);
   
     Shape c2 = Cylinder(8, 2.5, 30).RotateX(90).TranslateZ(6);
     Union(front, back).Subtract(c2).WriteToFile("usb_holder.scad");
