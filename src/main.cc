@@ -37,26 +37,7 @@ int main() {
   if (kWriteTestKeys) {
     std::vector<Shape> test_shapes;
     std::vector<Key*> test_keys;
-    // &d.key_q, &d.key_w, &d.key_f, &d.key_3, &d.key_tab};
-    test_keys = {
-        //&d.key_th1, &d.key_th2, &d.key_th3, &d.key_th_top3, &d.key_th_top2,
-        &d.key_q,
-        &d.key_a,
-        &d.key_w,
-        &d.key_s,
-        &d.key_d,
-    };
-    test_keys = {
-        //&d.key_th1, &d.key_th2, &d.key_th3, &d.key_th_top3, &d.key_th_top2,
-        &d.key_th1,
-        &d.key_th2,
-        &d.key_th3,
-        //&d.key_th_top2,
-        &d.key_th_top3,
-        &d.key_th_bottom2,
-        //   &d.key_d,
-    };
-    // test_keys = d.all_keys();
+     test_keys = d.all_keys();
     for (Key* key : test_keys) {
       key->add_side_nub = false;
       key->add_top_nub = false;
@@ -73,16 +54,12 @@ int main() {
       //  test_shapes.push_back(dactyl_cc.Color("blue", .3));
     }
     UnionAll(test_shapes)
-        // .Subtract(d.key_th_top2.GetInverseCap())
         .WriteToFile("test_keys.scad");
     return 0;
   }
 
   // Set all of the widths here. This must be done before calling any of GetTopLeft etc.
 
-  // d.key_b.extra_width_bottom = 3;
-  // d.key_th1.extra_width_top = 2;
-  // d.key_th1.extra_width_left = 2;
   d.key_th_top3.extra_width_top = 2;
   d.key_th3.extra_width_right = 2;
   d.key_th_top3.extra_width_right = 1;
@@ -97,7 +74,6 @@ int main() {
 
   d.key_t.extra_width_right = 3;
   d.key_g.extra_width_right = 3;
-  // d.key_b.extra_width_right = 3;
 
   std::vector<Shape> shapes;
 
@@ -118,19 +94,6 @@ int main() {
                               d.key_slash.GetTopLeft(),
                               d.key_x.GetBottomLeft(),
                           }));
-  /*
-    shapes.push_back(TriFan(d.key_th1.GetBottomLeft(),
-                            {
-                                d.key_slash.GetBottomRight(),
-                                d.key_left_arrow.GetBottomLeft(),
-                            }));
-    shapes.push_back(TriFan(d.key_left_arrow.GetBottomRight(),
-                            {
-                                d.key_th1.GetTopLeft(),
-                                d.key_th1.GetBottomLeft(),
-                                d.key_left_arrow.GetBottomLeft(),
-                            }));
-                            */
   shapes.push_back(TriMesh({
       d.key_th1.GetBottomLeft(),
       d.key_slash.GetBottomRight(),
@@ -273,9 +236,6 @@ int main() {
 
     std::vector<WallPoint> wall_points = {
 
-        //{d.key_w.GetTopLeft(), up},
-        //        {d.key_w.GetTopRight(), up},
-
         {d.key_w.GetTopLeft(), up, 1},
 
         {d.key_e.GetTopLeft(), up},
@@ -291,10 +251,6 @@ int main() {
         {d.key_g.GetTopRight(), right},
         {d.key_g.GetBottomRight(), right},
 
-        //{d.key_b.GetTopRight(), right},
-
-        //{d.key_th_top2.GetTopRight().RotateFront(0, 0, -20), up, 0, 0},
-
         {d.key_th_top3.GetTopRight(), up},
         {d.key_th_top3.GetTopRight(), right},
         {d.key_th_top3.GetBottomRight(), right},
@@ -308,7 +264,6 @@ int main() {
 
         {d.key_th1.GetBottomLeft(), down},
 
-        //{d.key_left_arrow.GetBottomLeft().RotateFront(0, 0, -20), down, 0, 1},
         {d.key_slash.GetBottomRight(), down},
         {d.key_slash.GetBottomLeft(), down},
 
@@ -321,9 +276,6 @@ int main() {
         {d.key_q.GetBottomLeft(), left},
         {d.key_q.GetTopLeft(), left},
         {d.key_q.GetTopLeft(), up, 1, 0},
-        //{d.key_q.GetTopRight(), up},
-
-        //{d.key_1.GetTopRight().RotateFront(0, 0, 30), up, 0, 1},
 
     };
 
@@ -456,7 +408,6 @@ int main() {
   });
   negative_shapes.push_back(b_cut.GetInverseSwitch());
   AddShapes(&negative_shapes, screw_holes);
-  // Cut off the parts sticking up into the thumb plate.
 
   // Cut out holes for cords. Inserts can be printed to fit in.
   Shape trrs_hole = Cylinder(20, 5, 30).RotateX(90);

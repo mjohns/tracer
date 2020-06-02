@@ -173,10 +173,6 @@ KeyData::KeyData(TransformList key_origin) {
   key_f.Configure([&](Key& k) {
     k.name = "f";
 
-    // Absolute:
-    // k.SetPosition(44.3, 49.37, 28.1);
-    // k.t().ry = -20;
-
     k.SetParent(key_d);
     k.SetPosition(19.938, -0.950, 5.249);
     k.t().ry = -5;
@@ -198,10 +194,6 @@ KeyData::KeyData(TransformList key_origin) {
   key_s.Configure([&](Key& k) {
     k.name = "s";
 
-    // Absolute:
-    // k.SetPosition(6.09, 50.23, 18.05);
-    // k.t().ry = -10;
-
     k.SetParent(key_d);
     k.SetPosition(-19.571, -0.090, 5.430);
     k.t().ry = 5;
@@ -212,10 +204,6 @@ KeyData::KeyData(TransformList key_origin) {
 
   key_a.Configure([&](Key& k) {
     k.name = "a";
-
-    // Absolute:
-    // k.SetPosition(-15.41, 44.06, 19.7);
-    // k.t().ry = -10;
 
     k.SetParent(key_s);
     k.SetPosition(-20.887, -6.170, 5.358);
@@ -228,10 +216,6 @@ KeyData::KeyData(TransformList key_origin) {
 
   key_caps.Configure([&](Key& k) {
     k.name = "caps";
-
-    // Absolute:
-    // k.SetPosition(-37.7, 48.06, 15.98);
-    // k.t().ry = -5;
 
     k.SetParent(key_a);
     k.SetPosition(-22.597, 0.000, 0.207);
